@@ -1,0 +1,35 @@
+# Contributor: Bart Ribbers <bribbers@disroot.org>
+# Maintainer: Bart Ribbers <bribbers@disroot.org>
+pkgname=umockdev
+pkgver=0.12
+pkgrel=0
+_commit="66f8cdac6b77eff89a24ba981de39a3e693740b6"
+pkgdesc="Record/mock hardware devices for bug reports and regression tests"
+arch="all"
+url="https://github.com/martinpitt/umockdev/"
+license="LGPL-2.1"
+depends=""
+depends_dev="eudev-dev libgudev-dev"
+makedepends="$depends_dev autoconf automake libtool gtk-doc vala linux-headers bash"
+source="$pkgname-$pkgver.tar.gz::https://github.com/martinpitt/$pkgname/archive/$pkgver.tar.gz"
+subpackages="$pkgname-dev $pkgname-doc"
+options="!check" # Broken right now due to missing mount points
+
+build() {
+	cd "$builddir"
+
+	./autogen.sh --prefix=/usr --enable-gtk-doc --enable-introspection
+	make
+}
+
+check() {
+	cd "$builddir"
+	make check
+}
+
+package() {
+	cd "$builddir"
+
+	make DESTDIR="$pkgdir" install
+}
+sha512sums="2defc2a5d1293e16015f1cd1a95f8f113d5305eac72f4f2c6adc07638d2085d1458fb932597e8751390ed9b841dcfa41457ad23a914ba7927109a09a88db4546  umockdev-0.12.tar.gz"
