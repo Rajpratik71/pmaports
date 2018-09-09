@@ -1,0 +1,35 @@
+# Contributor: Bart Ribbers <bribbers@disroot.org>
+# Maintainer: Bart Ribbers <bribbers@disroot.org>
+pkgname=user-manager
+pkgver=5.13.5
+pkgrel=0
+pkgdesc="A simple system settings module to manage the users of your system"
+arch="all"
+url='https://www.kde.org/workspaces/plasmadesktop/'
+license="GPL-2.0 LGPL-2.1"
+depends=""
+makedepends="extra-cmake-modules qt5-qtbase-dev kwidgetsaddons-dev kcoreaddons-dev
+	ki18n-dev kconfig-dev kconfigwidgets-dev kcmutils-dev kio-dev kiconthemes-dev
+	kauth-dev libpwquality-dev"
+source="https://download.kde.org/stable/plasma/$pkgver/$pkgname-$pkgver.tar.xz"
+subpackages="$pkgname-lang"
+
+build() {
+	cmake \
+		-DCMAKE_INSTALL_PREFIX=/usr \
+		-DCMAKE_BUILD_TYPE=Release \
+		-DKDE_INSTALL_LIBDIR=lib \
+		-DKDE_INSTALL_LIBEXECDIR=lib
+	make
+}
+
+check() {
+	cd "$builddir"
+	CTEST_OUTPUT_ON_FAILURE=TRUE ctest
+}
+
+package() {
+	cd "$builddir"
+	make DESTDIR="$pkgdir" install
+}
+sha512sums="e18902843b7b6079ad712996cc90850c2e662c710b67e1d54dbec7db9194b1c7c640b6ced0bdf51c1f0974ba24edbff691cad347689e202e4478681a194e5172  user-manager-5.13.5.tar.xz"
