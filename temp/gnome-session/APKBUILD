@@ -1,0 +1,33 @@
+# Maintainer: William Pitcock <nenolod@dereferenced.org>
+pkgname=gnome-session
+pkgver=3.28.0
+pkgrel=0
+pkgdesc="GNOME session manager"
+url="http://www.gnome.org/"
+arch="all !aarch64 !armhf !s390x"
+license="GPL"
+depends="gnome-shell"
+makedepends="gnome-settings-daemon-dev libsm-dev 
+	consolekit2-dev itstool libxslt libxml2-utils json-glib-dev
+	meson xmlto"
+subpackages="$pkgname-doc $pkgname-lang"
+source="https://download.gnome.org/sources/$pkgname/${pkgver%.*}/$pkgname-$pkgver.tar.xz"
+builddir="$srcdir/$pkgname-$pkgver"
+
+build() {
+	cd "$builddir"
+	meson . _build --prefix=/usr -Dsystemd=false -Dsystemd_journal=false -Dconsolekit=true
+	ninja -C _build
+}
+
+check() {
+	cd "$builddir"
+	ninja -C _build test
+}
+
+package() {
+	cd "$builddir"
+	DESTDIR="$pkgdir" ninja -C _build install
+}
+
+sha512sums="c4eb9c0ac0410cf61e10f1423c9f8bcc85d2d07d5a3234feb535aa7b3471b954af06d24514c28409d8db5bbf241c5a3eb5f655d75b7d183394fb6beca5df6a76  gnome-session-3.28.0.tar.xz"
