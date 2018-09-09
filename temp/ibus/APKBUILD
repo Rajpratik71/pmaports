@@ -1,0 +1,60 @@
+# Contributor: Bart Ribbers <bribbers@disroot.org>
+pkgname=ibus
+pkgver=1.5.19
+pkgrel=0
+pkgdesc="Next Generation Input Bus for Linux"
+arch="all"
+url="https://github.com/ibus/ibus/wiki"
+license="LGPL-2.1"
+depends_dev="gnome-common gtk+2.0-dev gtk+3.0-dev dconf-dev libnotify-dev iso-codes-dev gobject-introspection-dev"
+makedepends="$depends_dev autoconf automake intltool gtk-doc libtool python3-dev unicode-emoji cldr-emoji-annotation unicode-character-database gconf coreutils dbus-x11 vala glib-dev "
+source="$pkgname-$pkgver.tar.gz::https://github.com/$pkgname/$pkgname/archive/$pkgver.tar.gz"
+triggers="$pkgname.trigger=/etc/dconf/db"
+subpackages="lib$pkgname $pkgname-dev $pkgname-doc $pkgname-lang"
+options="!check"
+
+build() {
+	cd "$builddir"
+	./autogen.sh \
+		--prefix=/usr \
+		--libexecdir=/usr/lib/ibus \
+		--sysconfdir=/etc \
+		--disable-gconf \
+		--disable-static \
+		--enable-dconf \
+		--enable-wayland \
+		--enable-gtk-doc \
+		--disable-memconf \
+		--enable-ui \
+		--enable-python-library \
+		--with-python=python3 \
+		--with-ucd-dir=/usr/share/unicode/
+	make
+}
+
+check() {
+	cd "$builddir"
+	make test
+}
+
+package() {
+	depends="py3-gobject3 libibus"
+	install=ibus.install
+
+	cd "$builddir"
+	make DESTDIR="$pkgdir" install
+	make -C src DESTDIR="$pkgdir" uninstall
+	make -C bindings DESTDIR="$pkgdir" uninstall
+	make DESTDIR="$pkgdir" uninstall-pkgconfigDATA
+}
+
+libibus() {
+	pkgdesc="IBus support library"
+	depends="glib"
+
+	cd "$builddir"
+	make -C src DESTDIR="$subpkgdir" install
+	make -C bindings DESTDIR="$subpkgdir" install
+	make DESTDIR="$subpkgdir" install-pkgconfigDATA
+} 
+sha512sums="28554a6ffcf4aa3426b9df18ce16790a8f81be09f4bd6733e7f6d9fe9cbb43519e2cbf12bc7b406e1a9deca9ba7f2fa8e1526101661697529aad9f04428bd69a  ibus-1.5.19.tar.gz"
