@@ -1,0 +1,71 @@
+# Contributor: A. Wilcox <awilfox@adelielinux.org>
+# Maintainer: A. Wilcox <awilfox@adelielinux.org>
+pkgname=mozjs
+pkgver=52.4.0
+pkgrel=0
+pkgdesc="Standalone JavaScript interpreter from Mozilla"
+url="https://developer.mozilla.org/en-US/docs/Mozilla/Projects/SpiderMonkey"
+arch="all"
+license="NPL-1.1"
+depends=""
+depends_dev="$pkgname=$pkgver-r$pkgrel"
+makedepends="autoconf2.13 icu-dev libffi-dev nspr-dev python which
+	zlib-dev linux-headers"
+subpackages="$pkgname-dev"
+source="https://distfiles.adelielinux.org/source/mozilla/mozjs-$pkgver.tar.bz2
+	0003-build-Fix-library-install-name-on-macOS.patch
+	0004-build-Copy-headers-on-install-instead-of-symlinking.patch
+	0006-Disable-MOZ_GLUE_IN_PROGRAM-in-stand-alone-builds-on.patch
+	0008-tests-Skip-on-all-64-bit-archs.patch
+	0009-build-Include-configure-script-be-nicer-about-option.patch
+	baseconfig.patch
+	dont-fail-tests-without-ion.patch
+	"
+builddir="$srcdir/mozjs-$pkgver"
+
+prepare() {
+	cd "$builddir"
+	default_prepare
+	cd "$builddir"/js/src
+	autoconf-2.13 old-configure.in >/dev/null
+	autoconf-2.13
+}
+
+build() {
+	cd "$builddir"/js/src
+	./configure \
+		--build=$CBUILD \
+		--host=$CHOST \
+		--prefix=/usr \
+		--disable-jemalloc \
+		--disable-optimize \
+		--enable-ion \
+		--enable-tests \
+		--with-intl-api \
+		--with-system-icu \
+		--with-system-nspr
+	MOZ_MAKE_FLAGS="$MAKEFLAGS" make
+}
+
+check() {
+	cd "$builddir"/js/src
+	dist/bin/jsapi-tests
+}
+
+package() {
+	cd "$builddir"/js/src
+	make DESTDIR="$pkgdir" install
+
+	# no real point for 400 MB monster.
+	# if someone needs this, we can split it into -dev.
+	rm "$pkgdir"/usr/lib/libjs_static.ajs
+}
+
+sha512sums="80e006ed7550b64dad7cf78335dd9f2d34f50ad486439887f0088eb3817242d24cf7c1d9325e2dcd4a01fd5c5f54d710873113b97fd914ccd961fa46a71653fa  mozjs-52.4.0.tar.bz2
+8563264274c8b47c41fcce0b23d8d31467c60b4f1e6b37e14a390950f0d4c84be08919e0cf3578367ca1c76633201fc7d182c98a1efb57b17ce176a3e1ed5b0d  0003-build-Fix-library-install-name-on-macOS.patch
+edbec26bff4fb91911b1dafc566d4cf37635e9039a1cbd527543d74765d1c96bcfae71fe4f9a66c6555750f402377db4963e2afe0d6b061f48dbab78717bd177  0004-build-Copy-headers-on-install-instead-of-symlinking.patch
+d9acf4570a073a2151e19ad854e72ff927d050b532f04367bf49fb0c98f8eb544e9f6c455b1411d09a8a3034a2be62e23b7f9080fac9249e4132e85f2245d474  0006-Disable-MOZ_GLUE_IN_PROGRAM-in-stand-alone-builds-on.patch
+a95e91ffa3693ac2ac81eddee2e490b4acfb5ae0381a291b1916afc0d91fb00b95457fde0efe62905025fe425c18d5363c5e6ad1bb121645b29a14f6c76c0489  0008-tests-Skip-on-all-64-bit-archs.patch
+2556f3322c5bc39c1efbbbd19b6843cf69b63a0255e8e3617f58b229e75ac221b6cb57fce15452cd1f25498c66f29f588f38c10c175b82c6fe163faaa7e3e2b0  0009-build-Include-configure-script-be-nicer-about-option.patch
+22870d6ee8a0a0b4359d78173aef0ade49063bfad495fd40815852684a1cdf17f9f50585e0d693eb712c2a2225ea43c4387cf454f3b9bd39e01899f3936775f1  baseconfig.patch
+6ebaf6fd24f1987020ad0da82cd2ff878e5c27997ac45a571899f492b435d12e32274eac35e2d571775b6f6bdce24f8e7a968088da61329e2cd36dfc762a0156  dont-fail-tests-without-ion.patch"

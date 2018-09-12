@@ -1,0 +1,51 @@
+From 6a5ffe6cc8c6c2b7cf18c1778279e993afbb660a Mon Sep 17 00:00:00 2001
+From: Marcin Juszkiewicz <mjuszkiewicz@redhat.com>
+Date: Wed, 5 Jul 2017 21:05:27 -0700
+Subject: [PATCH 08/10] tests: Skip on all 64-bit archs
+
+Tests that are skipped on x86_64 should be skipped on all 64-bit
+architectures.
+
+https://bugzilla.mozilla.org/show_bug.cgi?id=1357593
+
+Taken from Fedora:
+http://pkgs.fedoraproject.org/cgit/rpms/mozjs38.git/tree/fix-64bit-archs.patch
+---
+ js/src/tests/js1_5/Array/regress-157652.js   | 2 +-
+ js/src/tests/js1_5/Array/regress-330812.js   | 2 +-
+ js/src/tests/js1_5/Regress/regress-422348.js | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/js/src/tests/js1_5/Array/regress-157652.js b/js/src/tests/js1_5/Array/regress-157652.js
+index 0bdba8fd..9d77802c 100644
+--- a/js/src/tests/js1_5/Array/regress-157652.js
++++ b/js/src/tests/js1_5/Array/regress-157652.js
+@@ -1,4 +1,4 @@
+-// |reftest| skip-if(xulRuntime.XPCOMABI.match(/x86_64/)||Android) -- No test results
++// |reftest| skip-if(xulRuntime.XPCOMABI.match(/x86_64|aarch64|ppc64|ppc64le|s390x/)||Android) -- No test results
+ /* -*- Mode: C++; tab-width: 2; indent-tabs-mode: nil; c-basic-offset: 2 -*- */
+ /* This Source Code Form is subject to the terms of the Mozilla Public
+  * License, v. 2.0. If a copy of the MPL was not distributed with this
+diff --git a/js/src/tests/js1_5/Array/regress-330812.js b/js/src/tests/js1_5/Array/regress-330812.js
+index 3a392976..c48f4c88 100644
+--- a/js/src/tests/js1_5/Array/regress-330812.js
++++ b/js/src/tests/js1_5/Array/regress-330812.js
+@@ -1,4 +1,4 @@
+-// |reftest| skip-if(xulRuntime.XPCOMABI.match(/x86_64/)||Android) -- No test results
++// |reftest| skip-if(xulRuntime.XPCOMABI.match(/x86_64|aarch64|ppc64|ppc64le|s390x/)||Android) -- No test results
+ /* -*- Mode: C++; tab-width: 2; indent-tabs-mode: nil; c-basic-offset: 2 -*- */
+ /* This Source Code Form is subject to the terms of the Mozilla Public
+  * License, v. 2.0. If a copy of the MPL was not distributed with this
+diff --git a/js/src/tests/js1_5/Regress/regress-422348.js b/js/src/tests/js1_5/Regress/regress-422348.js
+index f2443c28..7ae83f4a 100644
+--- a/js/src/tests/js1_5/Regress/regress-422348.js
++++ b/js/src/tests/js1_5/Regress/regress-422348.js
+@@ -1,4 +1,4 @@
+-// |reftest| skip-if(xulRuntime.XPCOMABI.match(/x86_64/)) -- On 64-bit, takes forever rather than throwing
++// |reftest| skip-if(xulRuntime.XPCOMABI.match(/x86_64|aarch64|ppc64|ppc64le|s390x/)) -- On 64-bit, takes forever rather than throwing
+ /* -*- Mode: C++; tab-width: 2; indent-tabs-mode: nil; c-basic-offset: 2 -*- */
+ /* This Source Code Form is subject to the terms of the Mozilla Public
+  * License, v. 2.0. If a copy of the MPL was not distributed with this
+-- 
+2.13.0
+

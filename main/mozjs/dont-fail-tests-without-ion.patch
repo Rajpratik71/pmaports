@@ -1,0 +1,39 @@
+
+# HG changeset patch
+# User Steve Fink <sfink@mozilla.com>
+# Date 1519362707 28800
+# Node ID 7b78c4aa2d589e088519b4f76bddf8ded33283a6
+# Parent  9b8b888e1ce64b1a607158681aecb959721d1326
+Bug 1426006 - Do not expect ion scripts when ion is unavailable. r=bbouvier, a=RyanVM
+
+diff --git a/js/src/jsapi-tests/testPreserveJitCode.cpp b/js/src/jsapi-tests/testPreserveJitCode.cpp
+--- a/js/src/jsapi-tests/testPreserveJitCode.cpp
++++ b/js/src/jsapi-tests/testPreserveJitCode.cpp
+@@ -38,24 +38,20 @@ testPreserveJitCode(bool preserveJitCode
+     cx->options().setBaseline(true);
+     cx->options().setIon(true);
+     cx->setOffthreadIonCompilationEnabled(false);
+ 
+     RootedObject global(cx, createTestGlobal(preserveJitCode));
+     CHECK(global);
+     JSAutoCompartment ac(cx, global);
+ 
+-#ifdef JS_CODEGEN_ARM64
+-    // The ARM64 Ion JIT is not yet enabled, so this test will fail with
+-    // countIonScripts(global) == 0. Once Ion is enabled for ARM64, this test
+-    // should be passing again, and this code can be deleted.
+-    // Bug 1208526 - ARM64: Reenable jsapi-tests/testPreserveJitCode once Ion is enabled
++    // The Ion JIT may be unavailable due to --disable-ion or lack of support
++    // for this platform.
+     if (!js::jit::IsIonEnabled(cx))
+         knownFail = true;
+-#endif
+ 
+     CHECK_EQUAL(countIonScripts(global), 0u);
+ 
+     const char* source =
+         "var i = 0;\n"
+         "var sum = 0;\n"
+         "while (i < 10) {\n"
+         "    sum += i;\n"
+

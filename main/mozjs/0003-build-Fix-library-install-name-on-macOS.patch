@@ -1,0 +1,30 @@
+From fd8fc6e7b8760c961be7a3b9c6559d15f5ad008f Mon Sep 17 00:00:00 2001
+From: Philip Chimento <philip.chimento@gmail.com>
+Date: Wed, 5 Jul 2017 22:44:18 -0700
+Subject: [PATCH 03/10] build: Fix library install name on macOS
+
+In order for the library to work under JHbuild, it has to have an install
+name with an absolute path, since it will be installed in a shared
+location.
+
+https://bugzilla.mozilla.org/show_bug.cgi?id=1379536
+---
+ config/rules.mk | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/config/rules.mk b/config/rules.mk
+index a21128cf..d88bada3 100644
+--- a/config/rules.mk
++++ b/config/rules.mk
+@@ -352,7 +352,7 @@ else
+ ifdef MOZ_IOS
+ _LOADER_PATH := @rpath
+ else
+-_LOADER_PATH := @executable_path
++_LOADER_PATH := $(abspath $(prefix))/lib
+ endif
+ EXTRA_DSO_LDOPTS	+= -dynamiclib -install_name $(_LOADER_PATH)/$(SHARED_LIBRARY) -compatibility_version 1 -current_version 1 -single_module
+ endif
+-- 
+2.13.0
+

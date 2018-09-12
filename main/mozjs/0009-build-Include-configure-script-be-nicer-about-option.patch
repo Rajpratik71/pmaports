@@ -1,0 +1,53 @@
+From 83374895c64a673acfc7a1898f134a04c1a45d15 Mon Sep 17 00:00:00 2001
+From: Philip Chimento <philip.chimento@gmail.com>
+Date: Wed, 5 Jul 2017 22:57:09 -0700
+Subject: [PATCH 09/10] build: Include configure script, be nicer about options
+
+A configure script is not included in the SpiderMonkey tarball by
+default. Also, we have to account for JHbuild passing extra unknown
+options like --disable-Werror.
+
+https://bugzilla.mozilla.org/show_bug.cgi?id=1379540
+
+MODIFIED by Ian Stakenvicius, to *not* attempt to overwrite the existing
+js/src/configure that 'make-source-package.sh' apparently adds to the
+tarball.
+
+---
+ python/mozbuild/mozbuild/configure/__init__.py | 2 +-
+ python/mozbuild/mozbuild/configure/options.py  | 6 +++++-
+ 2 files changed
+
+diff --git a/python/mozbuild/mozbuild/configure/__init__.py b/python/mozbuild/mozbuild/configure/__init__.py
+index 0fe640ca..09b460d3 100644
+--- a/python/mozbuild/mozbuild/configure/__init__.py
++++ b/python/mozbuild/mozbuild/configure/__init__.py
+@@ -356,7 +356,7 @@ class ConfigureSandbox(dict):
+         # All options should have been removed (handled) by now.
+         for arg in self._helper:
+             without_value = arg.split('=', 1)[0]
+-            raise InvalidOptionError('Unknown option: %s' % without_value)
++            print('Ignoring', without_value, ': Unknown option')
+ 
+         # Run the execution queue
+         for func, args in self._execution_queue:
+diff --git a/python/mozbuild/mozbuild/configure/options.py b/python/mozbuild/mozbuild/configure/options.py
+index 4310c862..15bfe425 100644
+--- a/python/mozbuild/mozbuild/configure/options.py
++++ b/python/mozbuild/mozbuild/configure/options.py
+@@ -402,7 +402,11 @@ class CommandLineHelper(object):
+ 
+     def add(self, arg, origin='command-line', args=None):
+         assert origin != 'default'
+-        prefix, name, values = Option.split_option(arg)
++        try:
++            prefix, name, values = Option.split_option(arg)
++        except InvalidOptionError as e:
++            print('Ignoring', arg, ':', e)
++            return
+         if args is None:
+             args = self._extra_args
+         if args is self._extra_args and name in self._extra_args:
+-- 
+2.13.0
+
