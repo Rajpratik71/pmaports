@@ -6,7 +6,7 @@ pkgdesc="GNOME session manager"
 url="http://www.gnome.org/"
 arch="all !aarch64 !armhf !s390x"
 license="GPL"
-depends="gnome-shell"
+depends="gnome-shell consolekit2"
 makedepends="gnome-settings-daemon-dev libsm-dev 
 	consolekit2-dev itstool libxslt libxml2-utils json-glib-dev
 	meson xmlto"

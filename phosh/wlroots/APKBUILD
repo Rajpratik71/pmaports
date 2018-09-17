@@ -1,7 +1,7 @@
 pkgname=wlroots
-pkgver=0_git20180803
+pkgver=0_git20180916
 pkgrel=0
-_commit="23e2c3c75968f5b2905b761e6cfc7eedb3f8ce81"
+_commit="83397e69992aa407e3eae559fb41a991f1a68752"
 pkgdesc="Pluggable, composable modules for building a Wayland compositor, with Purism hacks to support Phosh"
 arch="all"
 url="https://github.com/swaywm/wlroots"
@@ -10,9 +10,8 @@ depends="wayland wayland-protocols xorg-server-xwayland"
 depends_dev="libinput-dev xcb-util-image-dev"
 makedepends="$depends_dev meson ninja mesa-dev eudev-dev pixman-dev wayland-dev libxkbcommon-dev"
 subpackages="$pkgname-dev"
-source="$pkgname-$pkgver.tar.gz::https://github.com/swaywm/wlroots/archive/$_commit.tar.gz
-	remove-rpath.patch"
-options="!suid"
+source="$pkgname-$pkgver.tar.gz::https://github.com/swaywm/wlroots/archive/$_commit.tar.gz"
+options="suid"
 builddir="$srcdir/$pkgname-$_commit"
 
 build() {
@@ -29,5 +28,4 @@ package() {
 	install -D -m755 _build/rootston/rootston "$pkgdir"/usr/bin/rootston
 	chmod u+s "$pkgdir"/usr/bin/rootston
 }
-sha512sums="fa9f7e41f4cdccfd964527fbc9f2270627c6e441ca5810b07e47624b206249d6ebd31272ffed34fbe53c15ea4a3a403eb545978de727607343c688fbfb36751d  wlroots-0_git20180803.tar.gz
-d769a2baed7e8424a3eb13106af349c728091d760043b5ec76a94c6e6a78a85cb884c9e78c99fbdff731cd27630db6d8faf5f53caccec92d1b82d6f4cdf2f6c6  remove-rpath.patch"
+sha512sums="593a4d87f8e5684c3b325b227869728b1388b93be80cf23e0af3316d2684ddbec8916d836a5350096088a6c39ce0a4aa6b70f7059fd1857ac38718a77b45fd71  wlroots-0_git20180916.tar.gz"

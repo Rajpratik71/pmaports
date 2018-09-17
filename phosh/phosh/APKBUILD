@@ -1,15 +1,15 @@
 pkgname=phosh
-pkgver=0_git20180730
+pkgver=0_git20180917
 pkgrel=0
-_commit="e2feba0c47b1de95fd60651a4320c66eb5f51f0c"
-pkgdesc=" A shell PoC for the Librem5"
+_commit="f291f85e97e2e1ac116112ada495cc7b80a6ae2c"
+pkgdesc="A shell PoC for the Librem5"
 arch="all"
 url="https://source.puri.sm/Librem5/phosh"
 license="GPL2"
-depends="gtk+3.0 wayland-protocols wlroots gnome-session bash dbus-x11"
+depends="gtk+3.0 wayland-protocols wlroots gnome-session bash dbus-x11 gnome-settings-daemon virtboard"
 makedepends="gtk+3.0-dev meson ninja gnome-desktop-dev libhandy-dev gcr-dev upower-dev linux-pam-dev"
 subpackages="$pkgname-lang"
-source="$pkgname-$pkgver.tar.gz::https://source.puri.sm/Librem5/phosh/-/archive/$_commit.tar.gz"
+source="$pkgname-$pkgver.tar.gz::https://source.puri.sm/Librem5/$pkgname/-/archive/$_commit.tar.gz"
 options="!check" # Needs a running Wayland compositor
 builddir="$srcdir/$pkgname-$_commit"
 
@@ -28,4 +28,4 @@ package() {
 	cd "$builddir"
 	DESTDIR="$pkgdir/" ninja -C _build install
 }
-sha512sums="af7f7000fa11242df1c4f95b8471f2958aa86b7e41f436212119b31fbfe1da80ba2ccf52c1bd420a3158988fadfe2764520319667f9333f34808be62898e7e09  phosh-0_git20180730.tar.gz"
+sha512sums="d4f18ab441a6b1bde38eaf3b68b3640b0c45fed64e60291ef4b151de73ca09d855e153ca8d1cff172b1f39ab106a4ebd32aac6eb085408af33cfece3414816bf  phosh-0_git20180917.tar.gz"

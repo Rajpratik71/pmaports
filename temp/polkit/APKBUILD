@@ -12,9 +12,12 @@ options="suid"
 depends_dev="eggdbus-dev dbus-glib-dev"
 makedepends="$depends_dev expat-dev glib-dev gtk-doc gobject-introspection-dev
 	intltool autoconf automake libtool mozjs-dev"
-install=
 subpackages="$pkgname-dev $pkgname-doc $pkgname-lang"
-source="http://www.freedesktop.org/software/polkit/releases/polkit-$pkgver.tar.gz"
+source="http://www.freedesktop.org/software/polkit/releases/polkit-$pkgver.tar.gz
+	0001-make-netgroup-support-optional.patch
+	fix-test-fgetpwent.patch
+	fix-consolekit-db-stat.patch"
+options="!check suid" # Broken
 
 prepare() {
 	cd "$builddir"
@@ -57,4 +60,7 @@ package() {
 	make DESTDIR="$pkgdir" install
 }
 
-sha512sums="1153011fa93145b2c184e6b3446d3ca21b38918641aeccd8fac3985ac3e30ec6bc75be6973985fde90f2a24236592f1595be259155061c2d33358dd17c4ee4fc  polkit-0.115.tar.gz"
+sha512sums="1153011fa93145b2c184e6b3446d3ca21b38918641aeccd8fac3985ac3e30ec6bc75be6973985fde90f2a24236592f1595be259155061c2d33358dd17c4ee4fc  polkit-0.115.tar.gz
+27452cfd67b5108b3b05243055c75f32397457a165425c8af44c0bca000626ea26628697ca4327ae39878ca5ad276476688686c733d6378a8d1bf2f17a1d27ab  0001-make-netgroup-support-optional.patch
+966825aded565432f4fda9e54113a773b514ebf7ee7faa83bcb8b97d218ae84a8707d6747bbc3cb8a828638d692fdef34c05038f150ad38e02a29f2c782aba5b  fix-test-fgetpwent.patch
+95493ef842b46ce9e724933a5d86083589075fb452435057b8f629643cac7c7eff67a24fd188087987e98057f0130757fad546d0c090767da3d71ebaf8485a24  fix-consolekit-db-stat.patch"

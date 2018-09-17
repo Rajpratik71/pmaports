@@ -1,0 +1,29 @@
+pkgname=virtboard
+pkgver=0_git20180914
+pkgrel=0
+_commit="f799ab66087c8c7de0fb7147b9045357136a23ed"
+pkgdesc="A basic keyboard, blazing the path of modern Wayland keyboards. Sacrificial."
+arch="all"
+url="https://source.puri.sm/Librem5/virtboard"
+license="GPL2"
+depends="wayland-protocols"
+makedepends="meson ninja libpng-dev wayland-dev libxkbcommon-dev cairo-dev linux-headers"
+source="$pkgname-$pkgver.tar.gz::https://source.puri.sm/Librem5/$pkgname/-/archive/$_commit.tar.gz"
+builddir="$srcdir/$pkgname-$_commit"
+
+build() {
+	cd "$builddir"
+	meson . _build --prefix=/usr
+	ninja -C _build
+}
+
+check() {
+	cd "$builddir"
+	ninja -C _build test
+}
+
+package() {
+	cd "$builddir"
+	DESTDIR="$pkgdir/" ninja -C _build install
+}
+sha512sums="b2bf5809053afca94289fc4fad38af509036e77eb8c26f550ae85c57d8e543b066af49d3c0b0b1cc84b43d767b26ca2d37498f3801b029f74beade948821f0dd  virtboard-0_git20180914.tar.gz"
