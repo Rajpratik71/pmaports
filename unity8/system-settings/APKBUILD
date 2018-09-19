@@ -1,0 +1,39 @@
+# Contributor: Bart Ribbers <bribbers@disroot.org>
+# Maintainer: Bart Ribbers <bribbers@disroot.org>
+pkgname=system-settings
+_pkgname=system-settings
+pkgver=0_git20180901
+_commit="c7ffee9a4a778c97ef5395e1eabc5ac5806d3e87"
+pkgrel=0
+pkgdesc='System Settings application for Unity8'
+url='https://github.com/ubports/system-settings'
+arch=all
+license="GPL-3.0"
+depends=""
+makedepends="cmake qt5-qtbase-dev upower-dev networkmanager-dev accountsservice-dev geonames-dev icu-dev libqtdbusmock-dev"
+source="$pkgname-$_commit.tar.gz::https://github.com/ubports/$pkgname/archive/$_commit.tar.gz"
+#options="!check"
+builddir="$srcdir/$pkgname-$_commit/build"
+
+prepare() {
+	mkdir "$builddir"
+	echo 'message("No updates sorry")' > "$builddir"/../tests/plugins/system-update/CMakeLists.txt
+}
+
+build() {
+	cd "$builddir"
+
+	cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr -DCMAKE_INSTALL_LIBDIR="lib/" ..
+	make
+}
+
+check() {
+	cd "$builddir"
+	make ARGS+="--output-on-failure" test
+}
+
+package() {
+	cd "$builddir"
+	make DESTDIR="$pkgdir" install
+}
+sha512sums="b25d85201dc016f20b8539d4f35e8df801f51e49c5c4da7c9c719bf65eb3e264749eb33cee78caedd36588b168be364ca39c866b791e97df003e4e9437d38778  system-settings-c7ffee9a4a778c97ef5395e1eabc5ac5806d3e87.tar.gz"

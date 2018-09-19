@@ -1,0 +1,32 @@
+# Contributor: Bart Ribbers <bribbers@disroot.org>
+# Maintainer: Bart Ribbers <bribbers@disroot.org>
+pkgname=libqtdbustest
+pkgver=0_git20180611
+pkgrel=0
+_commit="24e410ea77c9fa08894365c60bf08811a3b60bc0"
+pkgdesc='Library for testing DBus interactions using Qt'
+url='https://github.com/ubports/libqtdbustest'
+arch=all
+license=LGPL-3.0
+depends=""
+depends_dev="qt5-qtbase-dev"
+makedepends="$depends_dev cmake cmake-extras gmock gtest"
+source="$pkgname-$_commit.tar.gz::https://github.com/ubports/$pkgname/archive/$_commit.tar.gz"
+builddir="$srcdir/$pkgname-$_commit"
+
+build() {
+	cd "$builddir"
+	cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr -DCMAKE_INSTALL_LIBDIR="lib/" -DCMAKE_INSTALL_LIBEXECDIR="lib/" .
+	make
+}
+
+check() {
+	cd "$builddir"
+	make ARGS+="--output-on-failure" test
+}
+
+package() {
+	cd "$builddir"
+	make DESTDIR="$pkgdir" install
+}
+sha512sums="e587a3342879cf11543529cf2e6ad9f6266963afdad29f91bcf2742086cb9f889eca36f335280a658ecbf9a5e5319154e0b7ea842a008b3d2fb7740488ed442e  libqtdbustest-24e410ea77c9fa08894365c60bf08811a3b60bc0.tar.gz"

@@ -1,0 +1,32 @@
+# Contributor: Bart Ribbers <bribbers@disroot.org>
+# Maintainer: Bart Ribbers <bribbers@disroot.org>
+pkgname=libqtdbusmock
+pkgver=0_git20180611
+pkgrel=0
+_commit="d6d18303a4fdafbe3ef276bfbb312d7f31863e47"
+pkgdesc='Library for mocking DBus interactions using Qt'
+url='https://github.com/ubports/libqtdbusmock'
+arch=all
+license=LGPL-3.0
+depends=""
+depends_dev="qt5-qtbase-dev"
+makedepends="$depends_dev cmake"
+source="$pkgname-$_commit.tar.gz::https://github.com/ubports/$pkgname/archive/$_commit.tar.gz"
+builddir="$srcdir/$pkgname-$_commit"
+
+build() {
+	cd "$builddir"
+	cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr -DCMAKE_INSTALL_LIBDIR="lib/" .
+	make
+}
+
+check() {
+	cd "$builddir"
+	make ARGS+="--output-on-failure" test
+}
+
+package() {
+	cd "$builddir"
+	make DESTDIR="${pkgdir}" install
+}
+sha512sums="6be2f3522fd1754b921fb0633e3b2c87d905cd662041d7b32cbcb081342d5c3a989bfe276ded58cdd5fec5ca7466de6db1c4b8c61afe48eb7b429ebf0cd1b690  libqtdbusmock-d6d18303a4fdafbe3ef276bfbb312d7f31863e47.tar.gz"

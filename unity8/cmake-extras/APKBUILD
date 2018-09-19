@@ -1,0 +1,26 @@
+# Contributor: Bart Ribbers <bribbers@disroot.org>
+# Maintainer: Bart Ribbers <bribbers@disroot.org>
+pkgname=cmake-extras
+pkgver=0_git20170817
+pkgrel=0
+_commit="7a4639927c41b8e8f3144d0e11178a3cea5c4541"
+pkgdesc='A collection of add-ons for the CMake build tool'
+url='https://github.com/ubports/cmake-extras'
+arch=noarch
+license="GPL-3.0"
+depends=""
+makedepends="cmake"
+source="$pkgname-$_commit.tar.gz::https://github.com/ubports/$pkgname/archive/$_commit.tar.gz"
+builddir="$srcdir/$pkgname-$_commit"
+
+build() {
+	cd "$builddir"
+	cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr .
+	make
+}
+
+package() {
+	cd "$builddir"
+	make DESTDIR="$pkgdir" install
+}
+sha512sums="36453f94b6d15f3db281dd263a425fa3c14a79f3d2cf0aa1fac7a7030ab466d38ec5c58704027a9926cd2287f4ec87520441d24a8033a428509163960d149936  cmake-extras-7a4639927c41b8e8f3144d0e11178a3cea5c4541.tar.gz"
