@@ -11,7 +11,7 @@ depends_dev="meson gnome-desktop-dev libnotify-dev
 	libcanberra-dev colord-dev geoclue-dev
 	libgweather-dev geocode-glib-dev
 	pulseaudio-dev upower-dev libwacom-dev
-	cups-dev networkmanager-dev nss-dev"
+	cups-dev networkmanager-dev nss-dev polkit-dev"
 makedepends="$depends_dev libxml2-utils"
 subpackages="$pkgname-dev $pkgname-lang"
 source="https://download.gnome.org/sources/gnome-settings-daemon/${pkgver%.*}/gnome-settings-daemon-$pkgver.tar.xz
