@@ -1,0 +1,12 @@
+diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
+index 32b3632..b36b3c7 100644
+--- a/src/CMakeLists.txt
++++ b/src/CMakeLists.txt
+@@ -108,6 +108,7 @@ if (TRUST_STORE_MIR_AGENT_ENABLED)
+   target_link_libraries(
+     trust-prompt
+ 
++    intl
+     Qt5::Core Qt5::Gui Qt5::Qml Qt5::Quick
+     ${Boost_LIBRARIES}
+     ${PROCESS_CPP_LDFLAGS}

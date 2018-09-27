@@ -9,29 +9,35 @@ url='https://github.com/ubports/trust-store'
 arch=all
 license="LGPL-3.0"
 depends=""
-makedepends="cmake mir-dev boost-dev process-cpp-dev dbus-cpp-dev properties-cpp-dev libapparmor-dev qt5-qtdeclarative-dev"
-source="$pkgname-$_commit.tar.gz::https://github.com/ubports/$pkgname/archive/$_commit.tar.gz"
+makedepends="cmake mir-dev boost-dev process-cpp-dev dbus-cpp-dev properties-cpp-dev libapparmor-dev libapparmor qt5-qtdeclarative-dev"
+source="$pkgname-$_commit.tar.gz::https://github.com/ubports/$pkgname/archive/$_commit.tar.gz
+        link_with_libintl.patch"
 #options="!check"
-builddir="$srcdir/$pkgname-$_commit/build"
+builddir="$srcdir/$pkgname-$_commit" # TODO Improve, patch function apparently doesn't like a nested builddir
 
 prepare() {
-	mkdir "$builddir"
+	default_prepare
+	mkdir "$builddir/build"
+
+	# Don't build tests
+	truncate -s 0 "$builddir"/tests/CMakeLists.txt
 }
 
 build() {
-	cd "$builddir"
+	cd "$builddir/build"
 
 	cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr -DCMAKE_INSTALL_LIBDIR="lib/" ..
 	make
 }
 
 check() {
-	cd "$builddir"
+	cd "$builddir/build"
 	make ARGS+="--output-on-failure" test
 }
 
 package() {
-	cd "$builddir"
+	cd "$builddir/build"
 	make DESTDIR="$pkgdir" install
 }
-sha512sums="ae011c74f5a581f2cc6d5e69fe3ce69b085ca39d4f62c2fe0969283f8b8c0883ca461f706be11e9151af5e6fc38c4533b9e17fcf71f91ff3d97f76a711591fd4  trust-store-029270066854c281213cbf7dab10e21682c61b86.tar.gz"
+sha512sums="ae011c74f5a581f2cc6d5e69fe3ce69b085ca39d4f62c2fe0969283f8b8c0883ca461f706be11e9151af5e6fc38c4533b9e17fcf71f91ff3d97f76a711591fd4  trust-store-029270066854c281213cbf7dab10e21682c61b86.tar.gz
+999c67735fa6890cec849a987483a9265b490a6bd1a9982a1d516ecb41d406c15ee9873549a154b84f982967fcd53d89e9c275d52c54cfdde4b3f498f464eb36  link_with_libintl.patch"
