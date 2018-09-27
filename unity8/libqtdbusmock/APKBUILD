@@ -10,9 +10,10 @@ arch=all
 license=LGPL-3.0
 depends=""
 depends_dev="qt5-qtbase-dev"
-makedepends="$depends_dev cmake"
+makedepends="$depends_dev cmake libqtdbustest networkmanager-dev"
 source="$pkgname-$_commit.tar.gz::https://github.com/ubports/$pkgname/archive/$_commit.tar.gz"
 builddir="$srcdir/$pkgname-$_commit"
+options="!check" # See libqtdbustest
 
 build() {
 	cd "$builddir"
