@@ -1,0 +1,40 @@
+From efebde0bd9ea10dc3adbca72a3c3ebd2c18d3c96 Mon Sep 17 00:00:00 2001
+From: Luca Weiss <luca@z3ntu.xyz>
+Date: Thu, 27 Sep 2018 23:33:27 +0200
+Subject: [PATCH 6/7] 0002-On-startup-clean-out-the-data-of-removed-users.patch
+
+---
+ src/daemon.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
+
+diff --git a/src/daemon.c b/src/daemon.c
+index 19ad922..d2461ab 100644
+--- a/src/daemon.c
++++ b/src/daemon.c
+@@ -293,14 +293,20 @@ entry_generator_cachedir (Daemon       *daemon,
+                 g_free (filename);
+ 
+                 if (regular) {
++                        errno = 0;
+                         pwent = getpwnam (name);
+-                        if (pwent == NULL) {
+-                                g_debug ("user '%s' in cache dir but not present on system", name);
+-                        } else {
++                        if (pwent != NULL) {
+                                 *shadow_entry = getspnam (pwent->pw_name);
+ 
+                                 return pwent;
+                         }
++                        else if (errno == 0) {
++                                g_debug ("user '%s' in cache dir but not present on system, removing", name);
++                                remove_cache_files (name);
++                        }
++                        else
++                                g_warning ("failed to check if user '%s' in cache dir is present on system: %s",
++                                  name, g_strerror (errno));
+                 }
+         }
+ 
+-- 
+2.19.0
+

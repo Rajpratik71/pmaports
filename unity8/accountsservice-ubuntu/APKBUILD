@@ -1,0 +1,63 @@
+# Contributor: Carlo Landmeter <clandmeter@gmail.com>
+# Maintainer: Natanael Copa <ncopa@alpinelinux.org>
+
+# Needed because of https://github.com/ubports/system-settings/issues/65
+pkgname=accountsservice-ubuntu
+_pkgname=accountsservice
+pkgver=0.6.45
+pkgrel=0
+pkgdesc="D-Bus interface for user account query and manipulation"
+url="http://www.freedesktop.org/software/accountsservice/"
+arch="all"
+license="GPL-3.0-or-later"
+depends=""
+depends_dev="glib-dev gobject-introspection-dev polkit-dev"
+makedepends="$depends_dev intltool gnome-doc-utils"
+subpackages="$pkgname-dev $pkgname-doc $pkgname-lang"
+source="http://www.freedesktop.org/software/accountsservice/accountsservice-$pkgver.tar.xz
+	musl-fgetspent_r.patch
+	0001-0001-formats-locale-property.patch.patch
+	0002-0007-add-lightdm-support.patch.patch
+	0003-0011-add-background-file-support.patch.patch
+	0004-0016-add-input-sources-support.patch.patch
+	0005-0001-Move-cache-cleanup-out-into-a-common-function-a.patch
+	0006-0002-On-startup-clean-out-the-data-of-removed-users..patch
+	0007-1002-dont-override-standardoutput.patch.patch
+	"
+builddir="$srcdir"/$_pkgname-$pkgver
+build() {
+	cd "$builddir"
+	# Hack to check for /var/log/wtmp instead of /var/log/utx.log
+	sed -i configure -e "s;utx\.log;wtmp;g"
+	ac_cv_file__var_log_utx_log=yes ./configure \
+		--build=$CBUILD \
+		--host=$CHOST \
+		--prefix=/usr \
+		--sysconfdir=/etc \
+		--mandir=/usr/share/man \
+		--infodir=/usr/share/info \
+		--localstatedir=/var \
+		--disable-systemd \
+		--enable-introspection=yes
+	make
+}
+
+check() {
+	cd "$builddir"
+	make check
+}
+
+package() {
+	cd "$builddir"
+	make DESTDIR="$pkgdir" install
+}
+
+sha512sums="09975f9fa03a3177d923de6d6f6e6acfffeb2ff4924c45eaac78c994c16974427c8e936a87034747ba494d2bb3df6e8a92ff44db387761b06e06e311d7cf105a  accountsservice-0.6.45.tar.xz
+469392beca8f5941eafaa193c4fcb0472770ee4183ce520416a1b5d6abafe0e201990eb74d06bfbd9e20af08e55aff5f0031f267083f6c6879f0fe4e5028103c  musl-fgetspent_r.patch
+33297ead95c6d58db46a8d4c32531678e53befa6a7d972465153ef270f0b673450fbd2a09b0c6cc0df9acce5d89e9b4aa2de06870a3bdba41dacc35f76935b02  0001-0001-formats-locale-property.patch.patch
+6ec609476fe58bab35e592c5c6ab5accf26e50fb23218b67d6ddd2b24859ad8c084404a2132148d3f47cbc957e73c55a7593885e4b277c18047b19d046b5ef27  0002-0007-add-lightdm-support.patch.patch
+a540e63370707bc4b607e8a0d734f20f890d0c4d467b36248b5bb26b6eed07ffeb09871868768d7c702858d5e4cd4482849d8ae148cc51c1eda3ff6f36fe0c1d  0003-0011-add-background-file-support.patch.patch
+dd6a3418a58308e6ee84fc13a5603b0a16f7238781ded93b2168b58524c087594e743137701fd6a3133c51d22470f397344099631f555954deaeb5805dbe8b41  0004-0016-add-input-sources-support.patch.patch
+b970f38a88459bf6c8c19914d272666adb20940d9735049ed49545d300e5a8f39b15e025559c8e2b2156b5a4e0c69bd258c878e8389b5291a8126bc834645dad  0005-0001-Move-cache-cleanup-out-into-a-common-function-a.patch
+477b3f826bf84ff639d29597cd1a99bf090611d1f159e16acf04e78c159ffeaad1ce35c9a7a9dff6070b44465583ccf1b7b20b5dd501b7bc1af732dceef9c9ad  0006-0002-On-startup-clean-out-the-data-of-removed-users..patch
+0cfd10584ac999e15d6ebf6a3b311ada29f809957f355eaff101c8268e9bbf334687e69c7c07a64530eb2307e43ba6a5cfcafb7d9b472a5c18afbff5492a4466  0007-1002-dont-override-standardoutput.patch.patch"
