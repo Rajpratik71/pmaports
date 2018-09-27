@@ -10,7 +10,8 @@ arch=noarch
 license="GPL-3.0"
 depends=""
 makedepends="cmake"
-source="$pkgname-$_commit.tar.gz::https://github.com/ubports/$pkgname/archive/$_commit.tar.gz"
+source="$pkgname-$_commit.tar.gz::https://github.com/ubports/$pkgname/archive/$_commit.tar.gz
+        Use_gtest_cmake_from_mir.patch"
 builddir="$srcdir/$pkgname-$_commit"
 
 build() {
@@ -23,4 +24,5 @@ package() {
 	cd "$builddir"
 	make DESTDIR="$pkgdir" install
 }
-sha512sums="36453f94b6d15f3db281dd263a425fa3c14a79f3d2cf0aa1fac7a7030ab466d38ec5c58704027a9926cd2287f4ec87520441d24a8033a428509163960d149936  cmake-extras-7a4639927c41b8e8f3144d0e11178a3cea5c4541.tar.gz"
+sha512sums="36453f94b6d15f3db281dd263a425fa3c14a79f3d2cf0aa1fac7a7030ab466d38ec5c58704027a9926cd2287f4ec87520441d24a8033a428509163960d149936  cmake-extras-7a4639927c41b8e8f3144d0e11178a3cea5c4541.tar.gz
+996334490e062868b2dd24a0d2d688d95877343ae2db6a06efc580d14ffe1d00f0c9277be0929b9c7c859aef2dea0be68ddc49a7495ad16eaa0a156838f8bca9  Use_gtest_cmake_from_mir.patch"

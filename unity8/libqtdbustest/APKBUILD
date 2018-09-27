@@ -10,9 +10,12 @@ arch=all
 license=LGPL-3.0
 depends=""
 depends_dev="qt5-qtbase-dev"
-makedepends="$depends_dev cmake cmake-extras gmock gtest"
-source="$pkgname-$_commit.tar.gz::https://github.com/ubports/$pkgname/archive/$_commit.tar.gz"
+makedepends="$depends_dev cmake cmake-extras gmock gtest gtest-dev"
+checkdepends="procps py3-dbusmock dbus-x11"
+source="$pkgname-$_commit.tar.gz::https://github.com/ubports/$pkgname/archive/$_commit.tar.gz
+        SuicidalSleep.patch"
 builddir="$srcdir/$pkgname-$_commit"
+options="!check" # Needs session and system dbus and others
 
 build() {
 	cd "$builddir"
@@ -22,6 +25,7 @@ build() {
 
 check() {
 	cd "$builddir"
+	eval `dbus-launch --sh-syntax`
 	make ARGS+="--output-on-failure" test
 }
 
@@ -29,4 +33,5 @@ package() {
 	cd "$builddir"
 	make DESTDIR="$pkgdir" install
 }
-sha512sums="e587a3342879cf11543529cf2e6ad9f6266963afdad29f91bcf2742086cb9f889eca36f335280a658ecbf9a5e5319154e0b7ea842a008b3d2fb7740488ed442e  libqtdbustest-24e410ea77c9fa08894365c60bf08811a3b60bc0.tar.gz"
+sha512sums="e587a3342879cf11543529cf2e6ad9f6266963afdad29f91bcf2742086cb9f889eca36f335280a658ecbf9a5e5319154e0b7ea842a008b3d2fb7740488ed442e  libqtdbustest-24e410ea77c9fa08894365c60bf08811a3b60bc0.tar.gz
+4ce1c9a23784412b7e171129db2dc13e39a515249edc73bdbd835996d76670eeafead55dbaa197ec8614d560038f6bf9fa999be3e5989d4d7134172e9dcf25bb  SuicidalSleep.patch"
