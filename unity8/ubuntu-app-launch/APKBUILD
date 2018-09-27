@@ -9,12 +9,22 @@ arch="all"
 url='https://unity8.io'
 license="GPL-3.0"
 depends="libertine"
-depends_dev="glib-dev gobject-introspection-dev lttng-ust-dev json-glib-dev zeitgeist-dev mir-dev"
+depends_dev="glib-dev gobject-introspection-dev lttng-ust-dev json-glib-dev zeitgeist-dev mir-dev unity-api curl-dev properties-cpp-dev"
 makedepends="$depends_dev cmake dbus-test-runner"
-source="$pkgname-$_commit.tar.gz::https://github.com/ubports/$pkgname/archive/$_commit.tar.gz"
-subpackages="$pkgname-dev $pkgname-doc $pkgname-lang"
+source="$pkgname-$_commit.tar.gz::https://github.com/ubports/$pkgname/archive/$_commit.tar.gz
+		no_coverage.patch
+		musl_environ.patch
+		sentinel_error.patch"
+subpackages="$pkgname-dev"
 options="!check"
-builddir="$srcdir/$pkgname-$_commit" # Requires an out of source tree build
+builddir="$srcdir/$pkgname-$_commit" # Requires an out of source tree build TODO: Fix this comment
+
+prepare() {
+	default_prepare
+
+	# Don't build tests
+	truncate -s 0 "$builddir"/tests/CMakeLists.txt
+}
 
 build() {
 	cmake \
@@ -34,4 +44,7 @@ package() {
 	make DESTDIR="$pkgdir" install
 }
 
-sha512sums="f93ddf137b6753f09542b3e398763cab9d338477253d6db268b3d09cb8db7510e6a9cdd5e8d91038f43d486b38640e7fc8a5c1f907f5b567d30650a6ff7d994d  ubuntu-app-launch-bde4305307fff160180bb487eae9f2948023e433.tar.gz"
+sha512sums="f93ddf137b6753f09542b3e398763cab9d338477253d6db268b3d09cb8db7510e6a9cdd5e8d91038f43d486b38640e7fc8a5c1f907f5b567d30650a6ff7d994d  ubuntu-app-launch-bde4305307fff160180bb487eae9f2948023e433.tar.gz
+ae503c51816534879d9540a2723ebe1e397ca4d230f9a3f4e7d2654768ae4a82ef02bf41404c5a168f88c6d749d11bdf3ae5ff5055fb496e369c2b96e2fb8972  no_coverage.patch
+de8111a1df326f06dd3e07dce52cc253ab7942a87b44442af5603e1bc2905bfaf98ea740954425d27d8aa66aa6aa3f554a124029201db4d0e34d175e8b4700eb  musl_environ.patch
+c7208903f293672bb83618e8ebe3ad01e4e2899c409ec9bb11c613d974357c582ae0e2ce5baa90609b09df75c21db7abd2fc883b5542a8c4828965cf8d7916a4  sentinel_error.patch"

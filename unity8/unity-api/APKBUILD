@@ -1,45 +1,41 @@
-# Contributor: Bart Ribbers <bribbers@disroot.org>
-# Maintainer: Bart Ribbers <bribbers@disroot.org>
+# Contributor:
+# Maintainer:
 pkgname=unity-api
-pkgver=0_git20180612
+pkgver=0_git20180918
+_commit="588b667714c1871d9a119b3b81171795eeee7452"
 pkgrel=0
-_commit="31cad5ad58c9d0dab7752a71bc560deffe7c4667"
-pkgdesc='Unity shell API'
-arch="all"
-url='https://unity8.io'
+pkgdesc='????'
+url='https://github.com/ubports/unity-api'
+arch=all
 license="LGPL-3.0"
 depends=""
-depends_dev="gtk+2.0-dev"
-makedepends="$depends_dev cmake"
+makedepends="cmake qt5-qtdeclarative-dev"
 source="$pkgname-$_commit.tar.gz::https://github.com/ubports/$pkgname/archive/$_commit.tar.gz"
-subpackages="$pkgname-dev"
-options="!check" # Requires as of yet unpackagable dependencies
-builddir="$srcdir/$pkgname-$_commit/build" # Requires an out of source tree build
+#options="!check"
+builddir="$srcdir/$pkgname-$_commit/build"
 
 prepare() {
+	default_prepare
 	mkdir "$builddir"
 
-	default_prepare
+	# Don't build tests
+	truncate -s 0 "$builddir"/../test/CMakeLists.txt
 }
 
 build() {
 	cd "$builddir"
-	cmake \
-		-DCMAKE_BUILD_TYPE=Release \
-		-DCMAKE_INSTALL_PREFIX=/usr \
-		-DNO_TESTS=True \
-		-DBUILD_QCH=ON ..
+
+	cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr -DCMAKE_INSTALL_LIBDIR="lib/" ..
 	make
 }
 
 check() {
 	cd "$builddir"
-	CTEST_OUTPUT_ON_FAILURE=TRUE ctest
+	make ARGS+="--output-on-failure" test
 }
 
 package() {
 	cd "$builddir"
 	make DESTDIR="$pkgdir" install
 }
-
-sha512sums="d44611917c37082bf7f209bc3ad109858622baff897b5d5efc07a33394b7b4c9252d481c475d9a8a9eb21c1c7fb882cd2dc0f7e614491de6536f636b64eaa6ae  unity-api-31cad5ad58c9d0dab7752a71bc560deffe7c4667.tar.gz"
+sha512sums="5b3968a2c3abc219983c6c72172aaf83fe3cd7fd5b371a67113ee5b4eb9010703b4f531aaacb21497452515db8f5ddaf3d4a4b5dbc362484614c04bc1536b772  unity-api-588b667714c1871d9a119b3b81171795eeee7452.tar.gz"
