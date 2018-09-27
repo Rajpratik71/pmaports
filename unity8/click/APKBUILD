@@ -1,0 +1,38 @@
+# Contributor:
+# Maintainer:
+pkgname=click
+pkgver=0_git20180108
+_commit=28b9c13e89f9957f02b6b8cddb1e7aa123b5b6e2
+pkgrel=0
+pkgdesc="????"
+url="https://github.com/ubports/click"
+arch="all"
+license="????"
+depends=""
+makedepends="cmake intltool vala gobject-introspection autoconf libtool json-glib-dev libgee-dev gobject-introspection-dev"
+install=""
+subpackages="$pkgname-dev $pkgname-doc"
+source="$pkgname-$_commit.tar.gz::https://github.com/ubports/$pkgname/archive/$_commit.tar.gz
+        musl_fixes.patch"
+builddir="$srcdir/$pkgname-$_commit"
+options="!check" # Needs dpkg
+
+build() {
+	cd "$builddir"
+	./autogen.sh 
+	./configure --prefix=/usr --disable-packagekit --disable-systemd
+	make
+}
+
+check() {
+	cd "$builddir"
+	make check
+}
+
+package() {
+	cd "$builddir"
+	make DESTDIR="$pkgdir/" PYTHON_INSTALL_FLAGS="--root=$pkgdir/" install
+}
+
+sha512sums="c0b9553afe2943916d7a83451c6e76af791166f82aa0e6bc872bfbfa47f5c328a2ab4ec8a446b00613e1522671ebef1b2f6444d0fd002fb1ac83bd7897f5e613  click-28b9c13e89f9957f02b6b8cddb1e7aa123b5b6e2.tar.gz
+e96c02220e9e9ac1f03f28769e2c52971bfe474112d84d7172f9578c6037dc5d5d84c9dc78337977e1d3bcde810e26b565aca17baed99b7288ea230c12a78f4c  musl_fixes.patch"
