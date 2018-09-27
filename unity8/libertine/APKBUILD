@@ -1,16 +1,23 @@
 pkgname=libertine
 pkgver=0_git20180814
 pkgrel=0
-_commit="ccb586fc4428c53431276098fa1f25ec9ec54f6e"
+_commit="4ae89b27bb94f5f0701fab29dc0c526db2621fa0"
 pkgdesc="A sandbox for running legacy deb-based X11 applications"
 url="https://github.com/ubports/libertine"
 arch="all"
 license="GPL-3.0"
+subpackages="$pkgname-doc"
 depends="system-settings"
 depends_dev="qt5-qtbase-dev qt5-qtdeclarative-dev gettext-dev python3-dev"
 makedepends="$depends_dev cmake intltool dbus-test-runner"
 source="$pkgname-$_commit.tar.gz::https://github.com/ubports/$pkgname/archive/$_commit.tar.gz"
 builddir="$srcdir/$pkgname-$_commit"
+
+prepare() {
+	default_prepare
+	# Don't build tests
+	truncate -s 0 "$builddir"/tests/CMakeLists.txt
+}
 
 build() {
 	cd $builddir
@@ -26,5 +33,5 @@ check() {
 package() {
 	cd $builddir
 	make DESTDIR="$pkgdir" install
-} 
-sha512sums="7da3065026189b53f114a85c89c383fd992e150b2daa33f7e5904ad6156b646a145bc6fb9d3ce38dfe3355f223ce3cb97d585a9aec9934f56e77863dbca8255a  libertine-ccb586fc4428c53431276098fa1f25ec9ec54f6e.tar.gz"
+}
+sha512sums="fdf43022089fcce096989ae45706ff207bd40058510822106174da4c2906fd5c4715fe675de840ef69c65b2ce2eb8acdf8b73df3e0d3e486867d4afddc997514  libertine-4ae89b27bb94f5f0701fab29dc0c526db2621fa0.tar.gz"
