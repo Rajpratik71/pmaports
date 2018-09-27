@@ -2,15 +2,15 @@
 # Maintainer: Bart Ribbers <bribbers@disroot.org>
 pkgname=system-settings
 _pkgname=system-settings
-pkgver=0_git20180901
-_commit="c7ffee9a4a778c97ef5395e1eabc5ac5806d3e87"
+pkgver=0_git20180920
+_commit="2e853038491659c864b646770693d175b9d1d9c2"
 pkgrel=0
 pkgdesc='System Settings application for Unity8'
 url='https://github.com/ubports/system-settings'
 arch=all
 license="GPL-3.0"
 depends=""
-makedepends="cmake qt5-qtbase-dev upower-dev networkmanager-dev accountsservice-dev geonames-dev icu-dev libqtdbusmock"
+makedepends="cmake qt5-qtbase-dev upower-dev networkmanager-dev accountsservice-dev geonames-dev icu-dev libqtdbusmock gsettings-qt-dev click-dev gnome-desktop-dev trust-store-dev"
 source="$pkgname-$_commit.tar.gz::https://github.com/ubports/$pkgname/archive/$_commit.tar.gz"
 #options="!check"
 builddir="$srcdir/$pkgname-$_commit/build"

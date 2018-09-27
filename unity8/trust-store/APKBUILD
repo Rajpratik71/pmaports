@@ -1,0 +1,37 @@
+# Contributor:
+# Maintainer:
+pkgname=trust-store
+pkgver=0_git20180614
+_commit="029270066854c281213cbf7dab10e21682c61b86"
+pkgrel=0
+pkgdesc='An API for creating, reading, updating and deleting trust requests answered by users.'
+url='https://github.com/ubports/trust-store'
+arch=all
+license="LGPL-3.0"
+depends=""
+makedepends="cmake mir-dev boost-dev process-cpp-dev dbus-cpp-dev properties-cpp-dev libapparmor-dev qt5-qtdeclarative-dev"
+source="$pkgname-$_commit.tar.gz::https://github.com/ubports/$pkgname/archive/$_commit.tar.gz"
+#options="!check"
+builddir="$srcdir/$pkgname-$_commit/build"
+
+prepare() {
+	mkdir "$builddir"
+}
+
+build() {
+	cd "$builddir"
+
+	cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr -DCMAKE_INSTALL_LIBDIR="lib/" ..
+	make
+}
+
+check() {
+	cd "$builddir"
+	make ARGS+="--output-on-failure" test
+}
+
+package() {
+	cd "$builddir"
+	make DESTDIR="$pkgdir" install
+}
+sha512sums="ae011c74f5a581f2cc6d5e69fe3ce69b085ca39d4f62c2fe0969283f8b8c0883ca461f706be11e9151af5e6fc38c4533b9e17fcf71f91ff3d97f76a711591fd4  trust-store-029270066854c281213cbf7dab10e21682c61b86.tar.gz"
