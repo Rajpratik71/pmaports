@@ -3,7 +3,7 @@
 pkgname=system-settings
 _pkgname=system-settings
 pkgver=0_git20180920
-_commit="26e4f74d2ac548d9ccefb522819503ee21cc887c"
+_commit="10e0e8c96890cd4924e63b84ba883b9ad330e071"
 pkgrel=0
 pkgdesc='System Settings application for Unity8'
 url='https://github.com/ubports/system-settings'
@@ -11,8 +11,7 @@ arch=all
 license="GPL-3.0"
 depends=""
 makedepends="cmake qt5-qtbase-dev upower-dev networkmanager-dev accountsservice-ubuntu-dev geonames-dev icu-dev libqtdbusmock gsettings-qt-dev click-dev gnome-desktop-dev trust-store qt5-qtdeclarative-dev"
-source="$pkgname-$_commit.tar.gz::https://github.com/ubports/$pkgname/archive/$_commit.tar.gz
-		no_app_launch.patch"
+source="$pkgname-$_commit.tar.gz::https://github.com/ubports/$pkgname/archive/$_commit.tar.gz"
 #options="!check"
 builddir="$srcdir/$pkgname-$_commit"
 
@@ -44,5 +43,4 @@ package() {
 	cd "$builddir"/build
 	make DESTDIR="$pkgdir" install
 }
-sha512sums="d14fc6b31ee8a80eedffc5d1f105fdf066f093f0a8d9bae9ab5f9344c4c19a9661e7b2e5edb1bb74bccf622e51f74712374a2dd39660a2ae88fe3f379f847b19  system-settings-26e4f74d2ac548d9ccefb522819503ee21cc887c.tar.gz
-4f3c64e9038ef621fc9fe6c54d9f0597fbd0ffe2d9b1831d0ce9ab0ead134925919ab9b1ddec1935e4cbefc55c8dd02c61185875e84d422b3ea71d42fb06cfb1  no_app_launch.patch"
+sha512sums="6243ac823871c93636d0b0ea8da3283bea885f532f190e7252f395cc2836af73442d679f5baf2b1abadbcf7c8f11522b6eb52ea891ac2b19cdaefd61328321da  system-settings-10e0e8c96890cd4924e63b84ba883b9ad330e071.tar.gz"
