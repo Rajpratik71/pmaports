@@ -1,0 +1,56 @@
+diff --git a/plugins/system-update/CMakeLists.txt b/plugins/system-update/CMakeLists.txt
+index 948376f6..2ba2273b 100644
+--- a/plugins/system-update/CMakeLists.txt
++++ b/plugins/system-update/CMakeLists.txt
+@@ -19,9 +19,6 @@ include_directories(
+     /usr/include/apt-pkg/
+ )
+ 
+-pkg_check_modules(UAL REQUIRED ubuntu-app-launch-3)
+-add_definitions(${UAL_CFLAGS} ${UAL_CFLAGS_OTHER})
+-
+ add_library(UpdatePlugin SHARED
+     click/apiclient.h
+     click/manager.h
+@@ -48,7 +45,6 @@ target_link_libraries(UpdatePlugin
+     Qt5::Quick Qt5::Core Qt5::Network Qt5::Sql
+     apt-pkg
+     uss-systemimage
+-    ${UAL_LDFLAGS}
+ )
+ 
+ add_library(UbuntuUpdatePanel MODULE
+diff --git a/plugins/system-update/click/manager_impl.cpp b/plugins/system-update/click/manager_impl.cpp
+index 8438beef..79c641d4 100644
+--- a/plugins/system-update/click/manager_impl.cpp
++++ b/plugins/system-update/click/manager_impl.cpp
+@@ -23,8 +23,6 @@
+ #include "network/accessmanager_impl.h"
+ #include "../../src/i18n.h"
+ 
+-#include <ubuntu-app-launch.h>
+-
+ #include <QDateTime>
+ #include <QFinalState>
+ #include <QState>
+diff --git a/tests/plugins/system-update/CMakeLists.txt b/tests/plugins/system-update/CMakeLists.txt
+index 43ce63b7..816c4fb3 100644
+--- a/tests/plugins/system-update/CMakeLists.txt
++++ b/tests/plugins/system-update/CMakeLists.txt
+@@ -7,15 +7,12 @@ include_directories(
+     ${QTDBUSTEST_INCLUDE_DIRS}
+ )
+ 
+-pkg_check_modules(UAL REQUIRED ubuntu-app-launch-3)
+-add_definitions(${UAL_CFLAGS} ${UAL_CFLAGS_OTHER})
+-
+ find_package(Qt5Test REQUIRED)
+ find_package(Qt5Sql REQUIRED)
+ 
+ set(CMAKE_AUTOMOC ON)
+ set(CMAKE_INCLUDE_CURRENT_DIR ON)
+-set(PLUGIN_LIBS UpdatePlugin Qt5::Test Qt5::Sql ${UAL_LDFLAGS})
++set(PLUGIN_LIBS UpdatePlugin Qt5::Test Qt5::Sql)
+ 
+ file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/mockclickserver.py DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+ 

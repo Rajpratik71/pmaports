@@ -3,37 +3,46 @@
 pkgname=system-settings
 _pkgname=system-settings
 pkgver=0_git20180920
-_commit="2e853038491659c864b646770693d175b9d1d9c2"
+_commit="26e4f74d2ac548d9ccefb522819503ee21cc887c"
 pkgrel=0
 pkgdesc='System Settings application for Unity8'
 url='https://github.com/ubports/system-settings'
 arch=all
 license="GPL-3.0"
 depends=""
-makedepends="cmake qt5-qtbase-dev upower-dev networkmanager-dev accountsservice-dev geonames-dev icu-dev libqtdbusmock gsettings-qt-dev click-dev gnome-desktop-dev trust-store-dev"
-source="$pkgname-$_commit.tar.gz::https://github.com/ubports/$pkgname/archive/$_commit.tar.gz"
+makedepends="cmake qt5-qtbase-dev upower-dev networkmanager-dev accountsservice-ubuntu-dev geonames-dev icu-dev libqtdbusmock gsettings-qt-dev click-dev gnome-desktop-dev trust-store qt5-qtdeclarative-dev"
+source="$pkgname-$_commit.tar.gz::https://github.com/ubports/$pkgname/archive/$_commit.tar.gz
+		no_app_launch.patch"
 #options="!check"
-builddir="$srcdir/$pkgname-$_commit/build"
+builddir="$srcdir/$pkgname-$_commit"
 
 prepare() {
-	mkdir "$builddir"
-	echo 'message("No updates sorry")' > "$builddir"/../tests/plugins/system-update/CMakeLists.txt
+	default_prepare
+	mkdir "$builddir"/build
+	truncate -s 0 "$builddir"/tests/CMakeLists.txt
+
+	# Don't build the update page, needs apt libraries
+	sed -i 's/update.cpp//g' plugins/system-update/CMakeLists.txt
+	sed -i 's/apt-pkg//g' plugins/system-update/CMakeLists.txt
+	sed -i 's/apt-pkg//g' tests/mocks/Ubuntu/SystemSettings/Update/CMakeLists.txt
+	echo 'message("No updates sorry")' > "$builddir"/tests/plugins/system-update/CMakeLists.txt
 }
 
 build() {
-	cd "$builddir"
+	cd "$builddir"/build
 
 	cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr -DCMAKE_INSTALL_LIBDIR="lib/" ..
 	make
 }
 
 check() {
-	cd "$builddir"
+	cd "$builddir"/build
 	make ARGS+="--output-on-failure" test
 }
 
 package() {
-	cd "$builddir"
+	cd "$builddir"/build
 	make DESTDIR="$pkgdir" install
 }
-sha512sums="b25d85201dc016f20b8539d4f35e8df801f51e49c5c4da7c9c719bf65eb3e264749eb33cee78caedd36588b168be364ca39c866b791e97df003e4e9437d38778  system-settings-c7ffee9a4a778c97ef5395e1eabc5ac5806d3e87.tar.gz"
+sha512sums="d14fc6b31ee8a80eedffc5d1f105fdf066f093f0a8d9bae9ab5f9344c4c19a9661e7b2e5edb1bb74bccf622e51f74712374a2dd39660a2ae88fe3f379f847b19  system-settings-26e4f74d2ac548d9ccefb522819503ee21cc887c.tar.gz
+4f3c64e9038ef621fc9fe6c54d9f0597fbd0ffe2d9b1831d0ce9ab0ead134925919ab9b1ddec1935e4cbefc55c8dd02c61185875e84d422b3ea71d42fb06cfb1  no_app_launch.patch"
