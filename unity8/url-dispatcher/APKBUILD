@@ -1,0 +1,45 @@
+# Contributor: Bart Ribbers <bribbers@disroot.org>
+# Maintainer: Bart Ribbers <bribbers@disroot.org>
+pkgname=url-dispatcher
+pkgver=0_git20180612
+pkgrel=0
+_commit=f7b7e005cd5c30882b1013eb4eefcac35fa77de0
+pkgdesc='????'
+arch="all"
+url='https://unity8.io'
+license="GPL-3.0"
+depends=""
+depends_dev="glib-dev ubuntu-app-launch-dev json-glib-dev click-dev unity-scopes-api-dev glib-dev"
+makedepends="$depends_dev cmake dbus-test-runner cmake-extras"
+source="$pkgname-$_commit.tar.gz::https://github.com/ubports/$pkgname/archive/$_commit.tar.gz"
+subpackages="$pkgname-dev"
+options="!check"
+builddir="$srcdir/$pkgname-$_commit"
+
+prepare() {
+	default_prepare
+
+	# Don't build tests
+	truncate -s 0 "$builddir"/tests/CMakeLists.txt
+}
+
+build() {
+	cmake \
+		-DCMAKE_BUILD_TYPE=Release \
+		-DCMAKE_INSTALL_PREFIX=/usr \
+		-DCMAKE_INSTALL_LIBDIR=lib \
+		-DBUILD_QCH=ON
+	make
+}
+
+check() {
+	cd "$builddir"
+	CTEST_OUTPUT_ON_FAILURE=TRUE ctest
+}
+
+package() {
+	cd "$builddir"
+	make DESTDIR="$pkgdir" install
+}
+
+sha512sums="bfa99e89ac08461659db0f4d440002ba0e340a9bfa799e9b96ae649a4991656f09377c59542f67286907325325c05a3a03ec27250f6ef3e8be650c1a480f9920  url-dispatcher-f7b7e005cd5c30882b1013eb4eefcac35fa77de0.tar.gz"

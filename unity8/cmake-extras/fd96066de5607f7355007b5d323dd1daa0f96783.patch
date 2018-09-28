@@ -1,0 +1,22 @@
+From fd96066de5607f7355007b5d323dd1daa0f96783 Mon Sep 17 00:00:00 2001
+From: Luca Weiss <luca@z3ntu.xyz>
+Date: Sat, 29 Sep 2018 00:30:43 +0200
+Subject: [PATCH] Fix error message in QmlPluginsConfig.cmake
+
+---
+ src/QmlPlugins/QmlPluginsConfig.cmake | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/QmlPlugins/QmlPluginsConfig.cmake b/src/QmlPlugins/QmlPluginsConfig.cmake
+index f563330..d7b2876 100644
+--- a/src/QmlPlugins/QmlPluginsConfig.cmake
++++ b/src/QmlPlugins/QmlPluginsConfig.cmake
+@@ -5,7 +5,7 @@ if(NOT TARGET qmlplugindump)
+     find_program(qmlplugindump_exe qmlplugindump)
+ 
+     if(NOT qmlplugindump_exe)
+-      msg(FATAL_ERROR "Could not locate qmlplugindump.")
++      message(FATAL_ERROR "Could not locate qmlplugindump.")
+     endif()
+ 
+     add_executable(qmlplugindump IMPORTED)
