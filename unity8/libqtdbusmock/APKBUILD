@@ -11,9 +11,17 @@ license=LGPL-3.0
 depends=""
 depends_dev="qt5-qtbase-dev"
 makedepends="$depends_dev cmake libqtdbustest networkmanager-dev"
-source="$pkgname-$_commit.tar.gz::https://github.com/ubports/$pkgname/archive/$_commit.tar.gz"
+source="$pkgname-$_commit.tar.gz::https://github.com/ubports/$pkgname/archive/$_commit.tar.gz
+		no_coverage.patch"
 builddir="$srcdir/$pkgname-$_commit"
 options="!check" # See libqtdbustest
+
+prepare() {
+	default_prepare
+
+	# Don't build tests
+	truncate -s 0 "$builddir"/tests/CMakeLists.txt
+}
 
 build() {
 	cd "$builddir"
@@ -30,4 +38,5 @@ package() {
 	cd "$builddir"
 	make DESTDIR="${pkgdir}" install
 }
-sha512sums="6be2f3522fd1754b921fb0633e3b2c87d905cd662041d7b32cbcb081342d5c3a989bfe276ded58cdd5fec5ca7466de6db1c4b8c61afe48eb7b429ebf0cd1b690  libqtdbusmock-d6d18303a4fdafbe3ef276bfbb312d7f31863e47.tar.gz"
+sha512sums="6be2f3522fd1754b921fb0633e3b2c87d905cd662041d7b32cbcb081342d5c3a989bfe276ded58cdd5fec5ca7466de6db1c4b8c61afe48eb7b429ebf0cd1b690  libqtdbusmock-d6d18303a4fdafbe3ef276bfbb312d7f31863e47.tar.gz
+b5a5616c00b7da8cb7ed5c1129a63372a8760412143b3cc3d57efe2e23ba1aa7d9a75c3f82b6b72eb5e2b12973a1b5a252aa77e557e74f8b9d7bcf94f0421942  no_coverage.patch"

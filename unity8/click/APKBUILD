@@ -9,7 +9,7 @@ url="https://github.com/ubports/click"
 arch="all"
 license="????"
 depends=""
-makedepends="cmake intltool vala gobject-introspection autoconf libtool json-glib-dev libgee-dev gobject-introspection-dev"
+makedepends="cmake intltool vala gobject-introspection autoconf libtool json-glib-dev libgee-dev gobject-introspection-dev automake"
 install=""
 subpackages="$pkgname-dev $pkgname-doc"
 source="$pkgname-$_commit.tar.gz::https://github.com/ubports/$pkgname/archive/$_commit.tar.gz
@@ -19,7 +19,7 @@ options="!check" # Needs dpkg
 
 build() {
 	cd "$builddir"
-	./autogen.sh 
+	./autogen.sh
 	./configure --prefix=/usr --disable-packagekit --disable-systemd
 	make
 }
