@@ -1,0 +1,40 @@
+# Contributor:
+# Maintainer:
+pkgname=net-cpp
+pkgver=2.2.0
+_pkgver=2.2.0+17.04.20161108.2
+pkgrel=0
+pkgdesc="A simple yet beautiful networking API for C++11"
+url="https://launchpad.net/process-cpp"
+arch="all"
+license="LGPL3 GPL3"
+depends=""
+makedepends="cmake boost-dev curl-dev"
+install=""
+subpackages="$pkgname-dev"
+source="https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/net-cpp/$_pkgver-0ubuntu1/net-cpp_$_pkgver.orig.tar.gz
+		functional_header.patch"
+builddir="$srcdir"
+
+prepare() {
+	default_prepare
+	mkdir "$builddir"/build
+	truncate -s 0 "$builddir"/tests/CMakeLists.txt
+}
+
+build() {
+	cd "$builddir"/build
+	cmake .. \
+		-DCMAKE_INSTALL_PREFIX=/usr \
+		-DCMAKE_INSTALL_LIBDIR=lib \
+		-DCMAKE_BUILD_TYPE=Release
+	make
+}
+
+package() {
+	cd "$builddir"/build
+	make DESTDIR="$pkgdir/" install
+}
+
+sha512sums="12c7f25b438c7094a753246502e29db19a6491a10e66f753afbf75dbce90dc292f4503d584036eb2ca2daec7541dcaeb65a196274105fa3d0519e68864fe659f  net-cpp_2.2.0+17.04.20161108.2.orig.tar.gz
+9b6dc2ab121f4513042c3439c739479b4d5ce1121a306cb762c8c2b004fff808a944d6e9bfac343e27381d2a4af957208aec2c1b6a69ccbb0d3280f28ea72c86  functional_header.patch"

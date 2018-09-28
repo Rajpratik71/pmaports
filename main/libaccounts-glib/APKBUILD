@@ -1,0 +1,42 @@
+# Maintainer:
+pkgname=libaccounts-glib
+pkgver=1.23_git20180913
+_commit=5cc347cb58c719aa1a21159ef51071a6fe1461be
+pkgrel=0
+pkgdesc="GLib-based client library for the accounts database"
+url="https://gitlab.com/accounts-sso/libaccounts-glib"
+arch="all"
+license="LGPL-2.1"
+depends=""
+makedepends="meson glib-dev libxml2-dev sqlite-dev gobject-introspection-dev vala py3-gobject3 check-dev gtk-doc"
+subpackages="$pkgname-dev"
+source="https://gitlab.com/accounts-sso/$pkgname/-/archive/$_commit/$pkgname-$_commit.tar.gz
+		fix_doc.patch" # https://gitlab.com/accounts-sso/libaccounts-glib/merge_requests/20
+builddir="$srcdir/$pkgname-$_commit"
+options="!check" # Needs D-Bus server
+
+prepare() {
+	default_prepare
+	mkdir "$builddir"/build
+}
+
+build() {
+	cd "$builddir"/build
+	meson \
+		--prefix=/usr \
+		--buildtype=release \
+		--sysconfdir=/etc ..
+	ninja
+}
+
+check() {
+	cd "$builddir"/build
+	ninja test
+}
+
+package() {
+	cd "$builddir"/build
+	DESTDIR="$pkgdir" ninja install
+}
+sha512sums="a3b8fd55e9c0d40a872b3a122cfbd14b9c39a61dc7b3f1382343a15095ed87c4eed7992631a21b4ab0c1106114e3ea8cccc7170772aa35440ece99e02787ef44  libaccounts-glib-5cc347cb58c719aa1a21159ef51071a6fe1461be.tar.gz
+96329ba7f13f11439d1d07fc364f7b435039f12a85e4a47ca0d17f4f2fcce1e4e80b661e336be37cdb88daf38ea40ec98f9586605b7e07ad19ced14b547b7ebe  fix_doc.patch"

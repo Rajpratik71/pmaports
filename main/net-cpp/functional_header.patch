@@ -1,0 +1,10 @@
+--- a/include/core/net/http/header.h
++++ b/include/core/net/http/header.h
+@@ -24,6 +24,7 @@
+ #include <memory>
+ #include <set>
+ #include <string>
++#include <functional>
+ 
+ namespace core
+ {
