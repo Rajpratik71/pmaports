@@ -1,0 +1,13 @@
+diff --git a/src/UbuntuToolkit/ucurihandler.cpp b/src/UbuntuToolkit/ucurihandler.cpp
+index ad752f80c..c9f0566c9 100644
+--- a/src/UbuntuToolkit/ucurihandler.cpp
++++ b/src/UbuntuToolkit/ucurihandler.cpp
+@@ -75,7 +75,7 @@ UCUriHandler::UCUriHandler()
+         qWarning() << "UCUriHandler: Empty \"APP_ID\" environment variable, ignoring.";
+         return;
+     }
+-    char* path = nih_dbus_path(NULL, "", applicationId.constData(), NULL);
++    char* path = nih_dbus_path(NULL, "", applicationId.constData(), (char *)NULL);
+     objectPath = QString::fromLocal8Bit(path);
+     nih_free(path);
+ 

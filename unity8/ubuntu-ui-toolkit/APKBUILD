@@ -1,0 +1,45 @@
+# Contributor: Bart Ribbers <bribbers@disroot.org>
+# Maintainer: Bart Ribbers <bribbers@disroot.org>
+pkgname=ubuntu-ui-toolkit
+pkgver=0_git20180422
+pkgrel=0
+_commit="104b74c1a49dd16b61547a7cc09a1c16254c8ad7"
+pkgdesc='The Ubuntu UI toolkit used in Ubuntu Touch'
+arch="all"
+url='https://unity8.io'
+license="LGPL-3.0"
+depends=""
+depends_dev="libnih-dev qt5-qtdeclarative-dev qt5-qtsvg-dev qt5-qtpim-dev qt5-qtsystems-dev lttng-ust-dev libxi-dev eudev-dev mir-dev libevdev-dev qt5-qtgraphicaleffects qt5-qtfeedback-dev"
+makedepends="$depends_dev qt5-qttools"
+source="$pkgname-$_commit.tar.gz::https://github.com/ubports/$pkgname/archive/$_commit.tar.gz"
+subpackages="$pkgname-dev"
+options="!check"
+builddir="$srcdir/$pkgname-$_commit"
+
+prepare() {
+	default_prepare
+	# Lets warnings be warnings and not errors
+	sed -i 's|warning_clean|warn_off|' "$builddir"/.qmake.conf
+	# bin/bash => bin/sh
+	sed -i 's|#!/bin/bash|#!/bin/sh|' "$builddir"/documentation/docs.sh
+	# Don't build documentation
+	#truncate -s 0 "$builddir"/documentation/documentation.pro
+}
+
+build() {
+	cd "$builddir"
+	qmake-qt5 "CONFIG+=no_docs"
+	make
+}
+
+check() {
+	cd "$builddir"
+	make check
+}
+
+package() {
+	cd "$builddir"
+	make INSTALL_ROOT="$pkgdir" install
+}
+
+sha512sums="e7bb74659b0a7b84ed80dee565164f2e5f1819adeb0b5c07cbb7319cfbf6dc39cff3be49e79b32458898ab72742a6568c031763ac2813a691aeb5ee8286e93f2  ubuntu-ui-toolkit-104b74c1a49dd16b61547a7cc09a1c16254c8ad7.tar.gz"
