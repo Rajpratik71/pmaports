@@ -1,27 +1,33 @@
 # Contributor: Bart Ribbers <bribbers@disroot.org>
 # Maintainer: Bart Ribbers <bribbers@disroot.org>
 pkgname=unity8
-pkgver=0_git20180729
+pkgver=0_git20180919
+_commit=87aa3950875c9cb614b33919dea08ae3ca16585b
 pkgrel=0
-_commit="24d39b31f7f67b9c80eda42590d92d75440b5ef5"
 pkgdesc='A convergent desktop environment'
 arch="all"
 url='https://unity8.io'
 license="GPL-3.0 LGPL-2.1"
 depends=""
-depends_dev="qt5-qtbase-dev qt5-qtdeclarative-dev unity-api geonames-dev qmenumodel-dev qmenumodel gnome-desktop-dev ubuntu-app-launch-dev"
-makedepends="$depends_dev cmake"
-source="$pkgname-$_commit.tar.gz::https://github.com/ubports/$pkgname/archive/$_commit.tar.gz"
+depends_dev="qt5-qtbase-dev qt5-qtdeclarative-dev unity-api geonames-dev qmenumodel-dev qmenumodel gnome-desktop-dev ubuntu-app-launch-dev ubuntu-ui-toolkit-dev libqtdbustest libqtdbusmock indicator-network-dev gsettings-qt-dev"
+makedepends="$depends_dev cmake cmake-extras"
+source="$pkgname-$_commit.tar.gz::https://github.com/ubports/$pkgname/archive/$_commit.tar.gz
+		AndroidAway.patch
+		use_cmake_extras_qmlplugins.patch"
 subpackages="$pkgname-dev $pkgname-doc $pkgname-lang"
 options="!check" # Fails due to requiring installed Plasma, which causes a circular dependency
-builddir="$srcdir/$pkgname-$_commit/build" # Requires an out of source tree build
+builddir="$srcdir/$pkgname-$_commit"
 
 prepare() {
-	mkdir "$builddir"
+	default_prepare
+	mkdir "$builddir"/build
+	# Don't build tests
+	truncate -s 0 "$builddir"/tests/CMakeLists.txt
+	rm cmake/modules/QmlPlugins.cmake
 }
 
 build() {
-	cd "$builddir"
+	cd "$builddir"/build
 	cmake \
 		-DCMAKE_BUILD_TYPE=Release \
 		-DCMAKE_INSTALL_PREFIX=/usr \
@@ -30,13 +36,15 @@ build() {
 }
 
 check() {
-	cd "$builddir"
+	cd "$builddir"/build
 	CTEST_OUTPUT_ON_FAILURE=TRUE ctest
 }
 
 package() {
-	cd "$builddir"
+	cd "$builddir"/build
 	make DESTDIR="${pkgdir}" install
 }
 
-sha512sums="d13cb7ccfe29f6ba321cb938559a136a0c49bd9293cdac33ec0d24dfbea93b35640cbaffd36b44b67cf5475b7b5343097a0f9a409bcceda0e008a2cb093d207e  unity8-24d39b31f7f67b9c80eda42590d92d75440b5ef5.tar.gz"
+sha512sums="811fc073ad77ec2991d968fe6784dd4c9d4dee1d2ef37a52cbb8f20f997085a31fded0e3b20ea603bf70a1e823aa000ee5df4a965e2590cfec9ef3807f390e14  unity8-87aa3950875c9cb614b33919dea08ae3ca16585b.tar.gz
+b81f32c9fd292852092fa8d035d3e518f2ffa56ef45b55c1452b1bd52555916ed682b2e05c3b9c26846f7b2d1ce61b03774f9deed8049a94fa9204ece1f15b0d  AndroidAway.patch
+f1240abb9e57d11a8f0f2cdc8e32f82075d5aaea66409d15b6115be8c1af6f6119f96d785e1de2efa6649f884f4cb80d794e11d523717d4ee63acdcb827ee065  use_cmake_extras_qmlplugins.patch"

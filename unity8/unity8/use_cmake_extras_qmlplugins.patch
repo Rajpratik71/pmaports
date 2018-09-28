@@ -1,0 +1,8 @@
+--- a/plugins/CMakeLists.txt
++++ b/plugins/CMakeLists.txt
+@@ -1,4 +1,4 @@
+-include(QmlPlugins)
++find_package(QmlPlugins)
+ 
+ # Set up and install a plugin for unity8.
+ #
