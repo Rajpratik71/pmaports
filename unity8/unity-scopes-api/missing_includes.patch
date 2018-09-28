@@ -1,0 +1,61 @@
+diff --git a/include/unity/scopes/internal/SettingsDB.h b/include/unity/scopes/internal/SettingsDB.h
+index 4db06732..4fae3757 100644
+--- a/include/unity/scopes/internal/SettingsDB.h
++++ b/include/unity/scopes/internal/SettingsDB.h
+@@ -25,6 +25,7 @@
+ #include <unity/util/ResourcePtr.h>
+ 
+ #include <time.h>
++#include <sys/stat.h>
+ 
+ namespace unity
+ {
+diff --git a/include/unity/scopes/internal/Utils.h b/include/unity/scopes/internal/Utils.h
+index bc683652..47c9983f 100644
+--- a/include/unity/scopes/internal/Utils.h
++++ b/include/unity/scopes/internal/Utils.h
+@@ -21,6 +21,7 @@
+ #include <unity/scopes/Variant.h>
+ #include <string>
+ #include <sstream>
++#include <sys/stat.h>
+ 
+ #include <boost/filesystem.hpp>
+ 
+diff --git a/scoperegistry/DirWatcher.cpp b/scoperegistry/DirWatcher.cpp
+index dee3cb28..5d6f2c9f 100644
+--- a/scoperegistry/DirWatcher.cpp
++++ b/scoperegistry/DirWatcher.cpp
+@@ -23,6 +23,7 @@
+ 
+ #include <sys/inotify.h>
+ #include <sys/ioctl.h>
++#include <sys/select.h>
+ #include <unistd.h>
+ #include <string.h>
+ 
+diff --git a/scoperunner/scoperunner.cpp b/scoperunner/scoperunner.cpp
+index f714b956..a61035ba 100644
+--- a/scoperunner/scoperunner.cpp
++++ b/scoperunner/scoperunner.cpp
+@@ -25,6 +25,8 @@
+ #include <core/posix/signal.h>
+ #include <core/posix/this_process.h>
+ 
++#include <libgen.h>
++
+ using namespace std;
+ using namespace unity::scopes;
+ using namespace unity::scopes::internal;
+diff --git a/scoperegistry/scoperegistry.cpp b/scoperegistry/scoperegistry.cpp
+index 0a988cfb..d5130c24 100644
+--- a/scoperegistry/scoperegistry.cpp
++++ b/scoperegistry/scoperegistry.cpp
+@@ -34,6 +34,7 @@
+ #include <boost/algorithm/string.hpp>
+ 
+ #include <wordexp.h>
++#include <libgen.h>
+ 
+ using namespace scoperegistry;
+ using namespace std;

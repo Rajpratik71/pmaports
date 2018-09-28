@@ -1,0 +1,56 @@
+# Contributor: Bart Ribbers <bribbers@disroot.org>
+# Maintainer: Bart Ribbers <bribbers@disroot.org>
+pkgname=unity-scopes-api
+pkgver=0_git20180917
+pkgrel=0
+_commit=06c06a644bc4739a3bb26fddd10248ed243055b6
+pkgdesc='????'
+arch="all"
+url='https://unity8.io'
+license="LGPL-3.0"
+depends=""
+depends_dev="glib-dev unity-api process-cpp-dev libapparmor-dev libapparmor lttng-ust-dev json-glib-dev libsignon-glib-dev libaccounts-glib-dev boost-dev zeromq-dev net-cpp-dev zmqpp-dev zmqpp capnproto-dev properties-cpp-dev"
+makedepends="$depends_dev cmake doxygen lttng-tools"
+source="$pkgname-$_commit.tar.gz::https://github.com/ubports/$pkgname/archive/$_commit.tar.gz
+		ParseChangelog.patch
+		missing_includes.patch
+		secure_getenv.patch
+		libsignon-glib-2.0.patch"
+subpackages="$pkgname-dev"
+options="!check"
+builddir="$srcdir/$pkgname-$_commit"
+
+prepare() {
+	mkdir "$builddir"/build
+	default_prepare
+
+	# Don't build tests
+	truncate -s 0 "$builddir"/test/CMakeLists.txt
+	truncate -s 0 "$builddir"/src/scopes/testing/CMakeLists.txt
+}
+
+build() {
+	cd "$builddir"/build
+	cmake \
+		-DCMAKE_BUILD_TYPE=Release \
+		-DCMAKE_INSTALL_PREFIX=/usr \
+		-DCMAKE_INSTALL_LIBDIR=lib \
+		-DWerror=OFF ..
+	make
+}
+
+check() {
+	cd "$builddir"/build
+	CTEST_OUTPUT_ON_FAILURE=TRUE ctest
+}
+
+package() {
+	cd "$builddir"/build
+	make DESTDIR="$pkgdir" install
+}
+
+sha512sums="f34e950802e9dd971ff5eed22bcfe3df5c6d669c44696b5416a0430b72b41dbc6553f2b981c9fc07f4edb985f1e9c47949dd051970e5e51870f13f7c1d069a4d  unity-scopes-api-06c06a644bc4739a3bb26fddd10248ed243055b6.tar.gz
+bf38e3de2184f3e7584b35f1dc4f43b1b3cd1929dbeaa94ae37c904b09c5b9228ffe59d2cef8394c08d34f3f105065548bd0285cea450f971d5f1c44be7c902b  ParseChangelog.patch
+206ef602a1bd3b3553e3bc94ad72a57a15825e4683df9d71e2c15f9c4c4107ac83c84df9c8ad5f44bbe42881af86a794aaf21a051e20437a3113ff1a80f617e7  missing_includes.patch
+f80f053be1ea6e1ff10dae227df9c5dab2614672b690fdd18f02980913e78ccd9da4d471bc4cf7d0813eecde5b8ecb8f6c95564d41c1c0f8a524ca21b0db1253  secure_getenv.patch
+a1a88448871091b0b5d94a14d1c23c99f5c1e459f102b53f863bdbca2dfe951d50e4c3ae86a98b222c76fe30c7b1558f1861a5298e2ebb352e819562943b8ea2  libsignon-glib-2.0.patch"
