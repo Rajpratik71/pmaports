@@ -9,12 +9,15 @@ arch="all"
 url='https://unity8.io'
 license="GPL-3.0 LGPL-2.1"
 depends=""
-depends_dev="qt5-qtbase-dev qt5-qtdeclarative-dev unity-api geonames-dev qmenumodel-dev qmenumodel gnome-desktop-dev ubuntu-app-launch-dev ubuntu-ui-toolkit-dev libqtdbustest libqtdbusmock indicator-network-dev gsettings-qt-dev libusermetrics-dev"
+depends_dev="qt5-qtbase-dev qt5-qtdeclarative-dev unity-api geonames-dev qmenumodel-dev qmenumodel gnome-desktop-dev ubuntu-app-launch-dev ubuntu-ui-toolkit-dev libqtdbustest libqtdbusmock indicator-network-dev gsettings-qt-dev libusermetrics-dev lightdm-qt5 lightdm-qt5-dev ubuntu-download-manager-dev linux-pam-dev"
 makedepends="$depends_dev cmake cmake-extras"
 source="$pkgname-$_commit.tar.gz::https://github.com/ubports/$pkgname/archive/$_commit.tar.gz
 		AndroidAway.patch
-		use_cmake_extras_qmlplugins.patch"
-subpackages="$pkgname-dev $pkgname-doc $pkgname-lang"
+		use_cmake_extras_qmlplugins.patch
+		NoDpkgParse.patch
+		fix_linking.patch
+		musl_includes.patch"
+subpackages="$pkgname-lang"
 options="!check" # Fails due to requiring installed Plasma, which causes a circular dependency
 builddir="$srcdir/$pkgname-$_commit"
 
@@ -31,7 +34,8 @@ build() {
 	cmake \
 		-DCMAKE_BUILD_TYPE=Release \
 		-DCMAKE_INSTALL_PREFIX=/usr \
-		-DBUILD_QCH=ON ..
+		-DCMAKE_INSTALL_LIBDIR=lib \
+		-DCMAKE_INSTALL_LOCALSTATEDIR=/var ..
 	make
 }
 
@@ -47,4 +51,7 @@ package() {
 
 sha512sums="811fc073ad77ec2991d968fe6784dd4c9d4dee1d2ef37a52cbb8f20f997085a31fded0e3b20ea603bf70a1e823aa000ee5df4a965e2590cfec9ef3807f390e14  unity8-87aa3950875c9cb614b33919dea08ae3ca16585b.tar.gz
 b81f32c9fd292852092fa8d035d3e518f2ffa56ef45b55c1452b1bd52555916ed682b2e05c3b9c26846f7b2d1ce61b03774f9deed8049a94fa9204ece1f15b0d  AndroidAway.patch
-f1240abb9e57d11a8f0f2cdc8e32f82075d5aaea66409d15b6115be8c1af6f6119f96d785e1de2efa6649f884f4cb80d794e11d523717d4ee63acdcb827ee065  use_cmake_extras_qmlplugins.patch"
+f1240abb9e57d11a8f0f2cdc8e32f82075d5aaea66409d15b6115be8c1af6f6119f96d785e1de2efa6649f884f4cb80d794e11d523717d4ee63acdcb827ee065  use_cmake_extras_qmlplugins.patch
+ca47a0de11c91bfcbcd9dd873b603e8833078ad552d3dc3c938e2ceaf24331578410260ab886609b4afe12058e4f9b6988b11437f73dc40920d77512e593e7e3  NoDpkgParse.patch
+e3d8209b43a92aff399670a2d950497f068deb2849b0bb422e543b0b8e0beb58ec487155d9b4f38aa48f5735bbb7e405f07479301532941f57a21000d92557d5  fix_linking.patch
+fed6e614b9c591707ed2cb36a663cbf046d59506b344130f44b5284704fb85a8fca5bb9484fb0d855dc003bd85cf7b5c1851be26abec2a285372d2e11cb3dcb6  musl_includes.patch"

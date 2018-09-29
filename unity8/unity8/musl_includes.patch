@@ -1,0 +1,13 @@
+diff --git a/plugins/LightDM/IntegratedLightDM/liblightdm/UsersModelPrivate.h b/plugins/LightDM/IntegratedLightDM/liblightdm/UsersModelPrivate.h
+index d072228dd..3dcf4c4db 100644
+--- a/plugins/LightDM/IntegratedLightDM/liblightdm/UsersModelPrivate.h
++++ b/plugins/LightDM/IntegratedLightDM/liblightdm/UsersModelPrivate.h
+@@ -23,6 +23,8 @@
+ #include <QObject>
+ #include <QString>
+ 
++#include <sys/types.h>
++
+ class AccountsServiceDBusAdaptor;
+ 
+ namespace QLightDM

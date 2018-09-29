@@ -1,0 +1,49 @@
+diff --git a/src/Dash/CMakeLists.txt b/src/Dash/CMakeLists.txt
+index cb00caf25..952ae1114 100644
+--- a/src/Dash/CMakeLists.txt
++++ b/src/Dash/CMakeLists.txt
+@@ -16,6 +16,7 @@ set_target_properties(unity8-dash PROPERTIES INSTALL_RPATH "${CMAKE_INSTALL_PREF
+ target_link_libraries(unity8-dash
+     Qt5::DBus Qt5::Gui Qt5::Qml Qt5::Quick Qt5::Test
+     UbuntuGestures connectivity-qt1
++    intl
+ )
+ 
+ if (ENABLE_TOUCH_EMULATION)
+diff --git a/tools/scopetool/CMakeLists.txt b/tools/scopetool/CMakeLists.txt
+index 751d021f6..50fdf33d8 100644
+--- a/tools/scopetool/CMakeLists.txt
++++ b/tools/scopetool/CMakeLists.txt
+@@ -4,7 +4,7 @@ add_executable(${SCOPE_TOOL}
+     ../../src/UnixSignalHandler.cpp
+     )
+ 
+-target_link_libraries(${SCOPE_TOOL} Qt5::Qml Qt5::Quick)
++target_link_libraries(${SCOPE_TOOL} Qt5::Qml Qt5::Quick intl)
+ 
+ # install binaries
+ install(TARGETS ${SCOPE_TOOL}
+diff --git a/plugins/LightDM/FullLightDM/CMakeLists.txt b/plugins/LightDM/FullLightDM/CMakeLists.txt
+index 0d0154172..e9c804bff 100644
+--- a/plugins/LightDM/FullLightDM/CMakeLists.txt
++++ b/plugins/LightDM/FullLightDM/CMakeLists.txt
+@@ -27,6 +27,7 @@ target_link_libraries(FullLightDM-qml
+     ${LIBLIGHTDM_LDFLAGS}
+     ${LIBUSERMETRICSOUTPUT_LDFLAGS}
+     Qt5::DBus Qt5::Gui Qt5::Qml
++    intl
+     )
+ 
+ add_unity8_plugin(FullLightDM 0.1 LightDM/FullLightDM TARGETS FullLightDM-qml)
+diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
+index eae303268..5d4c38c0b 100644
+--- a/src/CMakeLists.txt
++++ b/src/CMakeLists.txt
+@@ -52,6 +52,7 @@ target_link_libraries(${SHELL_APP}
+     Qt5::DBus Qt5::Gui Qt5::Qml Qt5::Quick Qt5::Test
+     ${ANDROID_PROPERTIES_LDFLAGS} ${GSETTINGS_QT_LDFLAGS}
+     UbuntuGestures connectivity-qt1 unity8-private
++    intl
+     )
+ 
+ if (ENABLE_TOUCH_EMULATION)

@@ -1,0 +1,47 @@
+# Contributor: Bart Ribbers <bribbers@disroot.org>
+# Maintainer: Bart Ribbers <bribbers@disroot.org>
+pkgname=ubuntu-download-manager
+pkgver=0_git20180603
+_commit=5ff8a51e5a8f68dce791a5c66f162137d7b96543
+pkgrel=0
+pkgdesc='????'
+arch="all"
+url='https://unity8.io'
+license="LGPL-3.0"
+depends=""
+depends_dev="qt5-qtdeclarative-dev boost-dev glog-dev libnih-dev"
+makedepends="$depends_dev cmake cmake-extras"
+source="$pkgname-$_commit.tar.gz::https://github.com/ubports/$pkgname/archive/$_commit.tar.gz"
+subpackages="$pkgname-dev"
+builddir="$srcdir/$pkgname-$_commit"
+options="!check"
+
+prepare() {
+	default_prepare
+	mkdir -p "$builddir"/build
+
+	# Don't build tests
+	truncate -s 0 "$builddir"/tests/CMakeLists.txt
+}
+
+build() {
+	cd "$builddir"/build
+	cmake \
+		-DCMAKE_BUILD_TYPE=Release \
+		-DCMAKE_INSTALL_PREFIX=/usr \
+		-DCMAKE_INSTALL_LIBEXECDIR=/usr/lib \
+		-DCMAKE_INSTALL_LIBDIR=lib ..
+	make
+}
+
+check() {
+	cd "$builddir"/build
+	CTEST_OUTPUT_ON_FAILURE=TRUE ctest
+}
+
+package() {
+	cd "$builddir"/build
+	make DESTDIR="$pkgdir" install
+}
+
+sha512sums="1f343548951c14e29e9e461335ca3803f7a9f75c469760ed7bc93f5ff7d166e124c77da5cf1267c9f633b13e2bad6489fbbadb76e930044ac80ad1c2d9a3408a  ubuntu-download-manager-5ff8a51e5a8f68dce791a5c66f162137d7b96543.tar.gz"
