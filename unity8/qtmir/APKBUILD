@@ -1,0 +1,49 @@
+# Contributor: Bart Ribbers <bribbers@disroot.org>
+# Maintainer: Bart Ribbers <bribbers@disroot.org>
+pkgname=qtmir
+pkgver=0_git20180919
+_commit=b37293e25eae4d03b344bb3f92f804d63dd1cce6
+pkgrel=0
+pkgdesc='QPA plugin to make Qt a Mir server'
+arch="all"
+url='https://unity8.io'
+license="????"
+depends=""
+depends_dev="mir-dev process-cpp-dev qt5-qtdeclarative-dev qt5-qtsensors-dev ubuntu-app-launch-dev gsettings-qt-dev libqtdbustest libqtdbusmock content-hub-dev valgrind-dev url-dispatcher-dev"
+makedepends="$depends_dev cmake cmake-extras"
+source="$pkgname-$_commit.tar.gz::https://github.com/ubports/$pkgname/archive/$_commit.tar.gz
+		use_cmake_extras_qmlplugins.patch
+		fix_polymorphic_type.patch"
+options="!check"
+builddir="$srcdir/$pkgname-$_commit"
+
+prepare() {
+	default_prepare
+	mkdir -p "$builddir"/build
+
+	# Don't build tests
+	truncate -s 0 "$builddir"/tests/CMakeLists.txt
+}
+
+build() {
+	cd "$builddir"/build
+	cmake \
+		-DCMAKE_BUILD_TYPE=Release \
+		-DCMAKE_INSTALL_PREFIX=/usr \
+		-DCMAKE_INSTALL_LIBDIR=lib ..
+	make
+}
+
+check() {
+	cd "$builddir"/build
+	CTEST_OUTPUT_ON_FAILURE=TRUE ctest
+}
+
+package() {
+	cd "$builddir"/build
+	make DESTDIR="$pkgdir" install
+}
+
+sha512sums="1e0576bb5aace7d45932cc74abcc16c04fa2443cc85630f9e4e33640c9730a34bd331a5b98348d84d89c36d6c22dc68befbb7141efbe625d26ebbd935dec879a  qtmir-b37293e25eae4d03b344bb3f92f804d63dd1cce6.tar.gz
+5ef78d88deb10310e9bd5905690f5a4d193242b7799dc562836ace91e2a477989acb26340076b85b2bcdc3609cd3a5cddceaa436b8caafcb627838f35f4df276  use_cmake_extras_qmlplugins.patch
+ca21f4c18bdb46667af679c8eb4d854f2602d113c975aad613b6b267f75efe35e6dd8451dc1939696e6a14360c828170d54dd1f73ef5fcba750b9fba16588f75  fix_polymorphic_type.patch"

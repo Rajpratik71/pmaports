@@ -1,0 +1,13 @@
+diff --git a/src/modules/Unity/Application/upstart/taskcontroller.cpp b/src/modules/Unity/Application/upstart/taskcontroller.cpp
+index 5bfaaaf3..bafbc057 100644
+--- a/src/modules/Unity/Application/upstart/taskcontroller.cpp
++++ b/src/modules/Unity/Application/upstart/taskcontroller.cpp
+@@ -78,7 +78,7 @@ std::shared_ptr<ual::Application> createApp(const QString &inputAppId, std::shar
+ 
+     try {
+         return ual::Application::create(appId, registry);
+-    } catch (std::runtime_error e) {
++    } catch (std::runtime_error& e) {
+         qCDebug(QTMIR_APPLICATIONS) << "ApplicationController::createApp - UAL failed to create app for appId"
+                                     << inputAppId << ":" << e.what();
+         return {};

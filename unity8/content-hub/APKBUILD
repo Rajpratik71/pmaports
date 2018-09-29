@@ -1,0 +1,39 @@
+# Contributor:
+# Maintainer:
+pkgname=content-hub
+pkgver=0_git20180610
+_commit="3156112daa14fa0ea49fdc0cd916aa74eff8d304"
+pkgrel=0
+pkgdesc='Content sharing/picking infrastructure and service, designed to allow apps to securely and efficiently exchange content'
+url='https://github.com/ubports/content-hub'
+arch=all
+license="LGPL-3.0"
+depends=""
+makedepends="cmake qt5-qtdeclarative-dev ubuntu-app-launch-dev gsettings-qt-dev libnih-dev ubuntu-download-manager-dev libnotify-dev libapparmor libapparmor-dev ubuntu-ui-toolkit-dev"
+source="$pkgname-$_commit.tar.gz::https://github.com/ubports/$pkgname/archive/$_commit.tar.gz
+		qmlplugindump.patch"
+subpackages="$pkgname-dev"
+options="!check"
+builddir="$srcdir/$pkgname-$_commit"
+
+prepare() {
+	default_prepare
+	mkdir "$builddir"/build
+
+	# Don't build tests
+	truncate -s 0 "$builddir"/tests/CMakeLists.txt
+}
+
+build() {
+	cd "$builddir"/build
+
+	cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr -DCMAKE_INSTALL_LIBDIR="lib/" ..
+	make
+}
+
+package() {
+	cd "$builddir"/build
+	make DESTDIR="$pkgdir" install
+}
+sha512sums="c252cf298159e676436d77e3d0ea330ac99e6cf4d3b9bffdde49ad25583abe4c3e6f114c6019b0eea5c7248a0498382df264149cc58de7263492c6b3cab9d3fb  content-hub-3156112daa14fa0ea49fdc0cd916aa74eff8d304.tar.gz
+d708b55205a72db5ae28dc14de06100d1067cc500e0195eaf9940acd46b11c07562022caf55076a08045337631ffd8ffd0af93c05c166cb8dfba73679e699c48  qmlplugindump.patch"
