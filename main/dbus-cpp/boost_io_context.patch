@@ -16,3 +16,15 @@ index d1f043e..7cbece2 100644
  }
  }
  
+@@ -37,7 +41,11 @@
+ namespace asio
+ {
+ ORG_FREEDESKTOP_DBUS_DLL_PUBLIC Executor::Ptr make_executor(const Bus::Ptr& bus);
++#if BOOST_VERSION >= 106600
++ORG_FREEDESKTOP_DBUS_DLL_PUBLIC Executor::Ptr make_executor(const Bus::Ptr& bus, boost::asio::io_context& io);
++#else
+ ORG_FREEDESKTOP_DBUS_DLL_PUBLIC Executor::Ptr make_executor(const Bus::Ptr& bus, boost::asio::io_service& io);
++#endif
+ }
+ }
+ }

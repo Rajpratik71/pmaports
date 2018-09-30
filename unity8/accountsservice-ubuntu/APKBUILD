@@ -13,6 +13,7 @@ license="GPL-3.0-or-later"
 depends=""
 depends_dev="glib-dev gobject-introspection-dev polkit-dev"
 makedepends="$depends_dev intltool gnome-doc-utils"
+provides="$_pkgname=$pkgver"
 subpackages="$pkgname-dev $pkgname-doc $pkgname-lang"
 source="http://www.freedesktop.org/software/accountsservice/accountsservice-$pkgver.tar.xz
 	musl-fgetspent_r.patch

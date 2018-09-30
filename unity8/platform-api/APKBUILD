@@ -1,0 +1,51 @@
+# Contributor: Bart Ribbers <bribbers@disroot.org>
+# Maintainer: Bart Ribbers <bribbers@disroot.org>
+pkgname=platform-api
+pkgver=0_git20180218
+pkgrel=0
+_commit=464a38b496ec499ed19fb93aefd6770abd5c19b8
+pkgdesc='????'
+arch="all"
+url='https://unity8.io'
+license="GPL-3.0 LGPL-3.0"
+depends=""
+makedepends="$depends_dev cmake cmake-extras process-cpp-dev dbus-cpp-dev url-dispatcher-dev location-service-dev"
+source="$pkgname-$_commit.tar.gz::https://github.com/ubports/$pkgname/archive/$_commit.tar.gz
+		hybris.patch
+		no_tests.patch
+		secure_getenv.patch"
+subpackages="$pkgname-dev"
+options="!check"
+builddir="$srcdir/$pkgname-$_commit"
+
+prepare() {
+	default_prepare
+	mkdir -p "$builddir"/build
+
+	# Don't build tests
+	truncate -s 0 "$builddir"/tests/CMakeLists.txt
+}
+
+build() {
+	cd "$builddir"/build
+	cmake \
+		-DCMAKE_BUILD_TYPE=Release \
+		-DCMAKE_INSTALL_PREFIX=/usr \
+		-DCMAKE_INSTALL_LIBDIR=lib ..
+	make
+}
+
+check() {
+	cd "$builddir"/build
+	CTEST_OUTPUT_ON_FAILURE=TRUE ctest
+}
+
+package() {
+	cd "$builddir"/build
+	make DESTDIR="$pkgdir" install
+}
+
+sha512sums="e2218778bdef261b0b1e16e70eb720c1ab2f369d410dbb24edd4acc9ab882ffdcc9a96e16b5e703960dae63c49d82912bb5671e678c1caf6c4f4bc6b9784b7ee  platform-api-464a38b496ec499ed19fb93aefd6770abd5c19b8.tar.gz
+ff463cce201928e971b614e32966e70b750c1accbd20a4b686930e7d36b513aec1b99f3d34a108706044798c45ed3a28d2e6072d4d796bdf2c7c3a9110538a6d  hybris.patch
+453e79d918ae2318bf3abcfe71f584c7a18d77748c0c52387514829368b9529c2c3d6afb8d6bb94d6bb5b0bdd09778a421ef61e71d72bd25c49e6f100b32c595  no_tests.patch
+13def07f5e0277267c660a405f864fbedc4ef64b42ce0dd860b241eef4a14881d8d9b203ba1ff528158f6113ed28db5c6221805f4573ecf44988fbc832a6da20  secure_getenv.patch"

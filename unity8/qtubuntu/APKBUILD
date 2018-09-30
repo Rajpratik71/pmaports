@@ -1,0 +1,39 @@
+# Contributor: Bart Ribbers <bribbers@disroot.org>
+# Maintainer: Bart Ribbers <bribbers@disroot.org>
+pkgname=qtubuntu
+pkgver=0_git20180218
+_commit=e8a29655d8351b79689ad5ef87f7c843b38c0520
+pkgrel=0
+pkgdesc='????'
+arch="all"
+url='https://unity8.io'
+license="GPL3 LGPL3"
+depends=""
+# Depends on linuxaccessibility_support-private = QtLinuxAccessibilitySupport which is currently not in qt5-qtbase
+makedepends="$depends_dev cmake cmake-extras content-hub-dev qt5-qtbase-dev mir-dev platform-api-dev SEECOMMENT"
+source="$pkgname-$_commit.tar.gz::https://github.com/ubports/$pkgname/archive/$_commit.tar.gz"
+options="!check"
+builddir="$srcdir/$pkgname-$_commit"
+
+prepare() {
+	default_prepare
+	mkdir -p "$builddir"/build
+}
+
+build() {
+	cd "$builddir"/build
+	qmake-qt5 ..
+	make
+}
+
+check() {
+	cd "$builddir"/build
+	CTEST_OUTPUT_ON_FAILURE=TRUE ctest
+}
+
+package() {
+	cd "$builddir"/build
+	make DESTDIR="$pkgdir" install
+}
+
+sha512sums="a246ca24e14f0377d653860095caed636e4de22ee434fa267f17303fd30234931db764fb5e4a80e6cb86f9f4f7843ae7fc8413ac7edb4043dd2bce525c93dc7c  qtubuntu-e8a29655d8351b79689ad5ef87f7c843b38c0520.tar.gz"

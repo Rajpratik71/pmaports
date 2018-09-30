@@ -1,0 +1,35 @@
+diff --git a/src/bridge/bridge.h b/src/bridge/bridge.h
+index c972e6a..eafacbd 100644
+--- a/src/bridge/bridge.h
++++ b/src/bridge/bridge.h
+@@ -44,7 +44,7 @@ class HIDDEN_SYMBOL Bridge
+ 
+     void* resolve_symbol(const char* symbol, const char* module = "") const
+     {
+-        static const char* test_modules = secure_getenv("UBUNTU_PLATFORM_API_TEST_OVERRIDE");
++        static const char* test_modules = getenv("UBUNTU_PLATFORM_API_TEST_OVERRIDE");
+         if (test_modules && strstr(test_modules, module)) {
+             printf("Platform API: INFO: Overriding symbol '%s' with test version\n", symbol);
+             return Scope::dlsym_fn(lib_override_handle, symbol);
+@@ -57,7 +57,7 @@ class HIDDEN_SYMBOL Bridge
+     Bridge()
+         : lib_handle(Scope::dlopen_fn(Scope::path(), RTLD_LAZY))
+     {
+-        if (Scope::override_path() && secure_getenv("UBUNTU_PLATFORM_API_TEST_OVERRIDE"))
++        if (Scope::override_path() && getenv("UBUNTU_PLATFORM_API_TEST_OVERRIDE"))
+             lib_override_handle = (Scope::dlopen_fn(Scope::override_path(), RTLD_LAZY));
+     }
+ 
+diff --git a/src/ubuntu/application/base_module.h b/src/ubuntu/application/base_module.h
+index 31522e3..379276b 100644
+--- a/src/ubuntu/application/base_module.h
++++ b/src/ubuntu/application/base_module.h
+@@ -47,7 +47,7 @@ struct HIDDEN_SYMBOL ToBackend
+         char module_name[32];
+ 
+         if (cache == NULL) {
+-            cache = secure_getenv("UBUNTU_PLATFORM_API_BACKEND");
++            cache = getenv("UBUNTU_PLATFORM_API_BACKEND");
+             if (cache == NULL) {
+                 FILE *conf;
+                 conf = fopen("/etc/ubuntu-platform-api/application.conf", "r");
