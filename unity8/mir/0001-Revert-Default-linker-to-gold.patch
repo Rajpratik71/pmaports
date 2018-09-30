@@ -1,0 +1,26 @@
+From e165da8b6951e982ba6534fcbc8956b0032aee54 Mon Sep 17 00:00:00 2001
+From: Luca Weiss <luca@z3ntu.xyz>
+Date: Sun, 30 Sep 2018 12:29:50 +0200
+Subject: [PATCH] Revert "Default linker to "gold""
+
+This reverts commit c9f2846a30fbf26f059ecdecef2b87e35f653e3a.
+---
+ CMakeLists.txt | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index da9a14b50d..437f16a2f8 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -89,7 +89,7 @@ if(HAS_W_PSABI)
+   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-psabi")
+ endif()
+ 
+-set(MIR_USE_LD gold CACHE STRING "Linker to use")
++set(MIR_USE_LD ld CACHE STRING "Linker to use")
+ set_property(CACHE MIR_USE_LD PROPERTY STRINGS "ld;gold;lld")
+ if(MIR_USE_LD MATCHES "gold")
+   set (CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -fuse-ld=gold")
+-- 
+2.19.0
+

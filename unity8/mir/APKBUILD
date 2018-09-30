@@ -15,10 +15,11 @@ source="https://github.com/MirServer/mir/releases/download/v$pkgver/mir-$pkgver.
 	https://raw.githubusercontent.com/capnproto/capnproto/04fd66e2992a3ed38d686642a3c479a7f3e131c9/c%2B%2B/cmake/FindCapnProto.cmake
 	disable-tests.patch
 	fix-musl-errors.patch
-	replace-bash-for-env.patch"
+	replace-bash-for-env.patch
+	0001-Revert-Default-linker-to-gold.patch"
 #	fix-musl-locale-crash.patch"
 subpackages="$pkgname-dev"
-options="!check" # Requires gtest which we haven't managed to package yet
+options="!check" # Some tests fail
 
 prepare() {
 	default_prepare
