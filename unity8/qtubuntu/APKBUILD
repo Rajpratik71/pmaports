@@ -9,9 +9,9 @@ arch="all"
 url='https://unity8.io'
 license="GPL3 LGPL3"
 depends=""
-# Depends on linuxaccessibility_support-private = QtLinuxAccessibilitySupport which is currently not in qt5-qtbase
-makedepends="$depends_dev cmake cmake-extras content-hub-dev qt5-qtbase-dev mir-dev platform-api-dev SEECOMMENT"
-source="$pkgname-$_commit.tar.gz::https://github.com/ubports/$pkgname/archive/$_commit.tar.gz"
+makedepends="$depends_dev cmake cmake-extras content-hub-dev qt5-qtbase-dev mir-dev platform-api-dev"
+source="$pkgname-$_commit.tar.gz::https://github.com/ubports/$pkgname/archive/$_commit.tar.gz
+		set_window_state.patch"
 options="!check"
 builddir="$srcdir/$pkgname-$_commit"
 
@@ -33,7 +33,8 @@ check() {
 
 package() {
 	cd "$builddir"/build
-	make DESTDIR="$pkgdir" install
+	make INSTALL_ROOT="$pkgdir" install
 }
 
-sha512sums="a246ca24e14f0377d653860095caed636e4de22ee434fa267f17303fd30234931db764fb5e4a80e6cb86f9f4f7843ae7fc8413ac7edb4043dd2bce525c93dc7c  qtubuntu-e8a29655d8351b79689ad5ef87f7c843b38c0520.tar.gz"
+sha512sums="a246ca24e14f0377d653860095caed636e4de22ee434fa267f17303fd30234931db764fb5e4a80e6cb86f9f4f7843ae7fc8413ac7edb4043dd2bce525c93dc7c  qtubuntu-e8a29655d8351b79689ad5ef87f7c843b38c0520.tar.gz
+6c9fb2dc5a0bc45c786b7a672c53bb84df0b212d733418d2b6f847638ec63930cf3be9906b428cb9e731c8c79c0877b8de30c9b3fc2050df51a672a86cac6654  set_window_state.patch"
