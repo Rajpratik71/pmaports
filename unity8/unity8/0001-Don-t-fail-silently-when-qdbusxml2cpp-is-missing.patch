@@ -1,0 +1,26 @@
+From 45a80b167aebe100d03c66792ae2859caf8341a1 Mon Sep 17 00:00:00 2001
+From: Luca Weiss <luca@z3ntu.xyz>
+Date: Mon, 1 Oct 2018 21:26:49 +0200
+Subject: [PATCH] Don't fail silently when qdbusxml2cpp is missing
+
+---
+ tests/CMakeLists.txt | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/tests/CMakeLists.txt b/tests/CMakeLists.txt
+index d06b9a4b4..65a874083 100644
+--- a/tests/CMakeLists.txt
++++ b/tests/CMakeLists.txt
+@@ -133,6 +133,9 @@ else()
+   FIND_PROGRAM(QDBUSXML2CPP_EXECUTABLE qdbusxml2cpp)
+ endif()
+ 
++if(NOT QDBUSXML2CPP_EXECUTABLE)
++    message(FATAL_ERROR "qdbusxml2cpp not found")
++endif()
+ 
+ install(DIRECTORY data graphics
+     DESTINATION "${SHELL_APP_DIR}/tests"
+-- 
+2.19.0
+

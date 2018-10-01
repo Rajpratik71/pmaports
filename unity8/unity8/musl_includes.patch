@@ -11,3 +11,15 @@ index d072228dd..3dcf4c4db 100644
  class AccountsServiceDBusAdaptor;
  
  namespace QLightDM
+diff --git a/tests/mocks/liblightdm/MockUsersModel.cpp b/tests/mocks/liblightdm/MockUsersModel.cpp
+index cbf8354a5..d69d2d467 100644
+--- a/tests/mocks/liblightdm/MockUsersModel.cpp
++++ b/tests/mocks/liblightdm/MockUsersModel.cpp
+@@ -25,6 +25,7 @@
+ #include "MockUsersModel.h"
+ #include <QDir>
+ #include <QIcon>
++#include <sys/types.h>
+ 
+ namespace QLightDM
+ {

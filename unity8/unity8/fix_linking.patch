@@ -47,3 +47,51 @@ index eae303268..5d4c38c0b 100644
      )
  
  if (ENABLE_TOUCH_EMULATION)
+diff --git a/tests/plugins/LightDM/IntegratedLightDM/CMakeLists.txt b/tests/plugins/LightDM/IntegratedLightDM/CMakeLists.txt
+index c35cbff8f..ccc0d5617 100644
+--- a/tests/plugins/LightDM/IntegratedLightDM/CMakeLists.txt
++++ b/tests/plugins/LightDM/IntegratedLightDM/CMakeLists.txt
+@@ -15,6 +15,7 @@ add_dependencies(GreeterDBusTestExec MockLightDM)
+ target_link_libraries(GreeterDBusTestExec
+     Qt5::Core Qt5::DBus Qt5::Quick Qt5::Test
+     MockLightDM
++    intl
+     )
+ target_include_directories(GreeterDBusTestExec PUBLIC
+     ${CMAKE_SOURCE_DIR}/plugins/LightDM
+diff --git a/tests/plugins/LightDM/IntegratedLightDM/CMakeLists.txt b/tests/plugins/LightDM/IntegratedLightDM/CMakeLists.txt
+index ccc0d5617..8d8d07a07 100644
+--- a/tests/plugins/LightDM/IntegratedLightDM/CMakeLists.txt
++++ b/tests/plugins/LightDM/IntegratedLightDM/CMakeLists.txt
+@@ -88,6 +88,7 @@ add_dependencies(GreeterUsersModelTestExec MockLightDM)
+ target_link_libraries(GreeterUsersModelTestExec
+     Qt5::Core Qt5::Test
+     MockLightDM
++    intl
+     )
+ target_include_directories(GreeterUsersModelTestExec PUBLIC
+     ${CMAKE_SOURCE_DIR}/plugins/LightDM
+diff --git a/tests/plugins/LightDM/IntegratedLightDM/CMakeLists.txt b/tests/plugins/LightDM/IntegratedLightDM/CMakeLists.txt
+index 8d8d07a07..67918cfc8 100644
+--- a/tests/plugins/LightDM/IntegratedLightDM/CMakeLists.txt
++++ b/tests/plugins/LightDM/IntegratedLightDM/CMakeLists.txt
+@@ -116,6 +116,7 @@ add_dependencies(GreeterPromptsModelTestExec MockLightDM)
+ target_link_libraries(GreeterPromptsModelTestExec
+     Qt5::Core Qt5::Test
+     MockLightDM
++    intl
+     )
+ target_include_directories(GreeterPromptsModelTestExec PUBLIC
+     ${CMAKE_SOURCE_DIR}/plugins/LightDM
+diff --git a/tests/mocks/AccountsService/CMakeLists.txt b/tests/mocks/AccountsService/CMakeLists.txt
+index c10e2dab8..b6a3a4563 100644
+--- a/tests/mocks/AccountsService/CMakeLists.txt
++++ b/tests/mocks/AccountsService/CMakeLists.txt
+@@ -17,6 +17,7 @@ add_library(MockAccountsService-qml MODULE
+ target_link_libraries(MockAccountsService-qml
+     Qt5::DBus Qt5::Qml
+     MockLightDM
++    intl
+     )
+ 
+ add_unity8_mock(AccountsService 0.1 AccountsService
