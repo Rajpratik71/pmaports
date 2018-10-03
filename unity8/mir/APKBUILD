@@ -10,7 +10,7 @@ license="GPL-2.0 GPL-3.0 LGPL-2.1 LGPL-3.0"
 depends="xkeyboard-config dmz-cursor-theme ttf-freefont"
 depends_dev="boost-dev mesa-dev glm-dev protobuf-dev glog-dev gflags-dev eudev-dev glib-dev wayland-dev libepoxy-dev nettle-dev libinput-dev
 	capnproto-dev libxml++-2.6-dev py3-pillow freetype-dev libevdev-dev umockdev-dev lttng-ust-dev yaml-cpp-dev libxcursor-dev"
-makedepends="$depends_dev cmake libxkbcommon-dev binutils-gold"
+makedepends="$depends_dev cmake libxkbcommon-dev"
 source="https://github.com/MirServer/mir/releases/download/v$pkgver/mir-$pkgver.tar.xz
 	https://raw.githubusercontent.com/capnproto/capnproto/04fd66e2992a3ed38d686642a3c479a7f3e131c9/c%2B%2B/cmake/FindCapnProto.cmake
 	disable-tests.patch
