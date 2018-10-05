@@ -3,7 +3,6 @@
 pkgname=umockdev
 pkgver=0.12
 pkgrel=0
-_commit="66f8cdac6b77eff89a24ba981de39a3e693740b6"
 pkgdesc="Record/mock hardware devices for bug reports and regression tests"
 arch="all"
 url="https://github.com/martinpitt/umockdev/"
