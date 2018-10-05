@@ -2,7 +2,7 @@
 # Maintainer: Bart Ribbers <bribbers@disroot.org>
 pkgname=konsole
 pkgver=18.04.1
-pkgrel=1
+pkgrel=2
 arch="all"
 url="https://kde.org/applications/system/konsole/"
 pkgdesc="KDE's terminal emulator"

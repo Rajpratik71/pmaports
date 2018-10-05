@@ -1,0 +1,10 @@
+--- sddm-0.18.0/src/helper/HelperApp.cpp.old	2018-07-18 10:31:40.000000000 +0000
++++ sddm-0.18.0/src/helper/HelperApp.cpp	2018-07-25 23:11:09.840000000 +0000
+@@ -35,7 +35,6 @@
+ #include <sys/socket.h>
+ #include <sys/time.h>
+ 
+-#include <utmp.h>
+ #include <utmpx.h>
+ #include <QByteArray>
+ 
