@@ -10,14 +10,15 @@ license="LGPL-2.1"
 depends=""
 depends_dev="eudev-dev libgudev-dev"
 makedepends="$depends_dev autoconf automake libtool gtk-doc vala linux-headers bash"
-source="$pkgname-$pkgver.tar.gz::https://github.com/martinpitt/$pkgname/archive/$pkgver.tar.gz"
+source="$pkgname-$pkgver.tar.gz::https://github.com/martinpitt/$pkgname/archive/$pkgver.tar.gz
+		fix_armhf.patch"
 subpackages="$pkgname-dev $pkgname-doc"
 options="!check" # Broken right now due to missing mount points
 
 build() {
 	cd "$builddir"
 
-	./autogen.sh --prefix=/usr --enable-gtk-doc --enable-introspection
+	./autogen.sh --prefix=/usr --enable-gtk-doc
 	make
 }
 
@@ -31,4 +32,5 @@ package() {
 
 	make DESTDIR="$pkgdir" install
 }
-sha512sums="2defc2a5d1293e16015f1cd1a95f8f113d5305eac72f4f2c6adc07638d2085d1458fb932597e8751390ed9b841dcfa41457ad23a914ba7927109a09a88db4546  umockdev-0.12.tar.gz"
+sha512sums="2defc2a5d1293e16015f1cd1a95f8f113d5305eac72f4f2c6adc07638d2085d1458fb932597e8751390ed9b841dcfa41457ad23a914ba7927109a09a88db4546  umockdev-0.12.tar.gz
+336aaa84f3716be5f3f8b1d8ab3e23f73cc025333ab447314ef127f000bd856e68a2d163f0da237177fc6fc16040f3a1ec5d1ad20befa1087d05f097c0a45b34  fix_armhf.patch"
