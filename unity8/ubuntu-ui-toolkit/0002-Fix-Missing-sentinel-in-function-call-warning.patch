@@ -1,3 +1,12 @@
+From 15f75fc4a5caf634e004736f50ff7239141cb608 Mon Sep 17 00:00:00 2001
+From: Luca Weiss <luca@z3ntu.xyz>
+Date: Wed, 3 Oct 2018 17:07:51 +0200
+Subject: [PATCH 2/3] Fix "Missing sentinel in function call" warning
+
+---
+ src/UbuntuToolkit/ucurihandler.cpp | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
 diff --git a/src/UbuntuToolkit/ucurihandler.cpp b/src/UbuntuToolkit/ucurihandler.cpp
 index ad752f80c..c9f0566c9 100644
 --- a/src/UbuntuToolkit/ucurihandler.cpp
@@ -11,3 +20,6 @@ index ad752f80c..c9f0566c9 100644
      objectPath = QString::fromLocal8Bit(path);
      nih_free(path);
  
+-- 
+2.19.1
+

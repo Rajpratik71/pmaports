@@ -3,7 +3,7 @@
 pkgname=ubuntu-ui-toolkit
 pkgver=0_git20180422
 pkgrel=0
-_commit="104b74c1a49dd16b61547a7cc09a1c16254c8ad7"
+_commit=2f541e8b5e509ad40cd8dc70d634434e7ab8fc42
 pkgdesc='The Ubuntu UI toolkit used in Ubuntu Touch'
 arch="all"
 url='https://unity8.io'
@@ -11,7 +11,10 @@ license="LGPL-3.0"
 depends=""
 depends_dev="libnih-dev qt5-qtdeclarative-dev qt5-qtsvg-dev qt5-qtpim-dev qt5-qtsystems-dev lttng-ust-dev libxi-dev eudev-dev mir-dev libevdev-dev qt5-qtgraphicaleffects qt5-qtfeedback-dev"
 makedepends="$depends_dev qt5-qttools"
-source="$pkgname-$_commit.tar.gz::https://github.com/ubports/$pkgname/archive/$_commit.tar.gz"
+source="$pkgname-$_commit.tar.gz::https://github.com/ubports/$pkgname/archive/$_commit.tar.gz
+	0001-Adapt-to-QtPim-API-changes.patch
+	0002-Fix-Missing-sentinel-in-function-call-warning.patch
+	0003-Add-option-to-disable-building-of-docs.patch"
 subpackages="$pkgname-dev"
 options="!check"
 builddir="$srcdir/$pkgname-$_commit"
@@ -22,8 +25,6 @@ prepare() {
 	sed -i 's|warning_clean|warn_off|' "$builddir"/.qmake.conf
 	# bin/bash => bin/sh
 	sed -i 's|#!/bin/bash|#!/bin/sh|' "$builddir"/documentation/docs.sh
-	# Don't build documentation
-	#truncate -s 0 "$builddir"/documentation/documentation.pro
 }
 
 build() {
@@ -42,4 +43,7 @@ package() {
 	make INSTALL_ROOT="$pkgdir" install
 }
 
-sha512sums="e7bb74659b0a7b84ed80dee565164f2e5f1819adeb0b5c07cbb7319cfbf6dc39cff3be49e79b32458898ab72742a6568c031763ac2813a691aeb5ee8286e93f2  ubuntu-ui-toolkit-104b74c1a49dd16b61547a7cc09a1c16254c8ad7.tar.gz"
+sha512sums="9f2d4707db936eb262893b226ffda71c886dcb2a99cb3c2e169f12f80ba04836717322a43f28919a75f43c57c8a6b1ebf52cd74cca50af0d8a657708faf81502  ubuntu-ui-toolkit-2f541e8b5e509ad40cd8dc70d634434e7ab8fc42.tar.gz
+016b0673cb0b1cdb7ef9632c414521f1522d1d14b22d7d6e11381b26cd849d340dba16c8656f4bff76defbde7e6d68245c3814e944e9d0aa05388009d9c06136  0001-Adapt-to-QtPim-API-changes.patch
+c5a8d341ad2abbc44745b8f358cd0e65bc781d94f5024e0ce6831bd6bd6dbf945bb5e57ba254c7e6c0b69c71c8fee169028dc7c99d868f15c6b568850d85d3cd  0002-Fix-Missing-sentinel-in-function-call-warning.patch
+fba64441decd59434beaf44be1c1324768e53724aab827cfb28b1efcd42b35a3ab18edc10d0b73a187ffe7c3a4da96e21b074adcd4d5c07bda5bfe473d413642  0003-Add-option-to-disable-building-of-docs.patch"
