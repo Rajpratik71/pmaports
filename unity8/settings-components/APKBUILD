@@ -1,0 +1,44 @@
+# Contributor: Bart Ribbers <bribbers@disroot.org>
+# Maintainer: Bart Ribbers <bribbers@disroot.org>
+pkgname=settings-components
+pkgver=0_git20180610
+pkgrel=0
+_commit=d66cac294e48d2a65ff8b5140187916c0eb1f2e8
+pkgdesc='????'
+arch="all"
+url='https://unity8.io'
+license="GPL-3.0 LGPL-3.0"
+depends=""
+makedepends="$depends_dev cmake cmake-extras qt5-qtdeclarative-dev"
+source="$pkgname-$_commit.tar.gz::https://github.com/ubports/$pkgname/archive/$_commit.tar.gz"
+options="!check"
+builddir="$srcdir/$pkgname-$_commit"
+
+prepare() {
+	default_prepare
+	mkdir -p "$builddir"/build
+
+	# Don't build tests
+	truncate -s 0 "$builddir"/tests/CMakeLists.txt
+}
+
+build() {
+	cd "$builddir"/build
+	cmake \
+		-DCMAKE_BUILD_TYPE=Release \
+		-DCMAKE_INSTALL_PREFIX=/usr \
+		-DCMAKE_INSTALL_LIBDIR=lib ..
+	make
+}
+
+check() {
+	cd "$builddir"/build
+	CTEST_OUTPUT_ON_FAILURE=TRUE ctest
+}
+
+package() {
+	cd "$builddir"/build
+	make DESTDIR="$pkgdir" install
+}
+
+sha512sums="199b2baf552f35bac4f16027e7823fae21149b0cfade6c99d3e0e802d32ba75fec3ac4e1a8651940e7216bfef737d3f7227e3b09840483b64d24a404a204e92a  settings-components-d66cac294e48d2a65ff8b5140187916c0eb1f2e8.tar.gz"
