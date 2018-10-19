@@ -8,17 +8,16 @@ url="https://github.com/jlaine/qdjango"
 arch="all"
 license="LGPL-2.1"
 depends=""
-makedepends="qt5-qtdeclarative-dev"
-install=""
-subpackages="$pkgname-dev"
+depends_dev="qt5-qtdeclarative-dev"
+makedepends="$depends_dev"
 source="$pkgname-$pkgver.tar.gz::https://github.com/jlaine/qdjango/archive/v$pkgver.tar.gz"
-options="!check" # Checks fail
+subpackages="$pkgname-dev $pkgname-doc"
 
 prepare() {
 	default_prepare
 	mkdir "$builddir"/build
-	# Don't build tests
-	#truncate -s 0 "$builddir"/tests/tests.pro
+
+	# Remove tests as they fail to compile
 	sed -i 's|SUBDIRS += tests examples|SUBDIRS += examples|' qdjango.pro
 }
 

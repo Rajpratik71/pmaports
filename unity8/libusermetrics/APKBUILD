@@ -4,22 +4,22 @@ pkgname=libusermetrics
 pkgver=0_git20180919
 _commit=a50ce9f3d4c428646c0a7063e11c7dff82d5983b
 pkgrel=0
-pkgdesc='????'
+pkgdesc='Library for exporting anonymous metrics about users'
 arch="all"
-url='https://unity8.io'
-license="LGPL-3.0"
+url="https://unity8.io"
+license="GPL-3.0 LGPL-3.0 LGPL-2.1"
 depends=""
-depends_dev=""
-makedepends="$depends_dev cmake qt5-qtbase-dev qt5-qtxmlpatterns-dev libapparmor libapparmor-dev gsettings-qt-dev qt5-qtdeclarative-dev click-dev qdjango-dev libqtdbustest cmake-extras intltool"
+depends_dev="qt5-qtxmlpatterns-dev libapparmor-dev gsettings-qt-dev qt5-qtdeclarative-dev click-dev qdjango-dev"
+makedepends="$depends_dev cmake-extras qt5-qtbase-dev libapparmor libqtdbustest intltool"
 source="$pkgname-$_commit.tar.gz::https://github.com/ubports/$pkgname/archive/$_commit.tar.gz
 		fix_linking.patch"
-subpackages="$pkgname-dev"
-options="!check"
+subpackages="$pkgname-dev $pkgname-lang"
 builddir="$srcdir/$pkgname-$_commit"
 
 prepare() {
-	mkdir "$builddir"/build
 	default_prepare
+	
+	mkdir "$builddir"/build
 
 	# Don't build tests
 	truncate -s 0 "$builddir"/tests/CMakeLists.txt

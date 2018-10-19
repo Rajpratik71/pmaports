@@ -10,14 +10,14 @@ license="GPL-2.0 GPL-3.0 LGPL-2.1 LGPL-3.0"
 depends="xkeyboard-config dmz-cursor-theme ttf-freefont"
 depends_dev="boost-dev mesa-dev glm-dev protobuf-dev glog-dev gflags-dev eudev-dev glib-dev wayland-dev libepoxy-dev nettle-dev libinput-dev
 	capnproto-dev libxml++-2.6-dev py3-pillow freetype-dev libevdev-dev umockdev-dev lttng-ust-dev yaml-cpp-dev libxcursor-dev"
-makedepends="$depends_dev cmake libxkbcommon-dev"
+makedepends="$depends_dev cmake libxkbcommon-dev gtest-dev gmock"
 source="https://github.com/MirServer/mir/releases/download/v$pkgver/mir-$pkgver.tar.xz
 	https://raw.githubusercontent.com/capnproto/capnproto/04fd66e2992a3ed38d686642a3c479a7f3e131c9/c%2B%2B/cmake/FindCapnProto.cmake
 	fix-musl-errors.patch
 	replace-bash-for-env.patch
 	0001-Revert-Default-linker-to-gold.patch"
 subpackages="$pkgname-dev"
-options="!check" # Some tests fail
+options="!check" # Tests are not built
 
 prepare() {
 	default_prepare
@@ -27,8 +27,11 @@ prepare() {
 
 build() {
 	cd "$builddir"
-	cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr -DCMAKE_INSTALL_LIBDIR="lib/" -DMIR_ENABLE_TESTS=OFF
-	cmake --build ./
+	cmake \
+		-DCMAKE_INSTALL_PREFIX:PATH=/usr \
+		-DCMAKE_INSTALL_LIBDIR="lib/" \
+		-DMIR_ENABLE_TESTS=OFF # Uses glibc specific function pthread_getname_np
+	make
 }
 
 check() {

@@ -1,19 +1,18 @@
 # Contributor: Bart Ribbers <bribbers@disroot.org>
-# Maintainer: Bart Ribbers <bribbers@disroot.org>
+# Maintainer:
 pkgname=indicator-network
 pkgver=0_git20180919
 pkgrel=0
 _commit=27fabbd275c211fa660a6afec494a12f7290d857
-pkgdesc='The "Network" indicator for Ubuntu Touch'
+pkgdesc="The 'Network' indicator for Ubuntu Touch"
 arch="all"
-url='https://unity8.io'
+url="https://unity8.io"
 license="GPL-3.0"
 depends=""
-depends_dev="glib-dev unity-api ofono-dev networkmanager-dev libsecret-dev url-dispatcher-dev qt5-qtdeclarative-dev libqofono-dev"
-makedepends="$depends_dev cmake cmake-extras"
+depends_dev="glib-dev unity-api-dev ofono-dev networkmanager-dev libsecret-dev url-dispatcher-dev qt5-qtdeclarative-dev libqofono-dev"
+makedepends="$depends_dev cmake-extras"
 source="$pkgname-$_commit.tar.gz::https://github.com/ubports/$pkgname/archive/$_commit.tar.gz"
-subpackages="$pkgname-dev"
-options="!check"
+subpackages="$pkgname-dev $pkgname-doc $pkgname-lang"
 builddir="$srcdir/$pkgname-$_commit"
 
 prepare() {

@@ -1,5 +1,5 @@
 # Contributor: Bart Ribbers <bribbers@disroot.org>
-# Maintainer: Bart Ribbers <bribbers@disroot.org>
+# Maintainer:
 pkgname=geonames
 pkgver=0_git20180310
 pkgrel=0

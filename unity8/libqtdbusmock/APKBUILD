@@ -1,25 +1,23 @@
 # Contributor: Bart Ribbers <bribbers@disroot.org>
-# Maintainer: Bart Ribbers <bribbers@disroot.org>
+# Maintainer:
 pkgname=libqtdbusmock
 pkgver=0_git20180611
 pkgrel=0
 _commit="d6d18303a4fdafbe3ef276bfbb312d7f31863e47"
-pkgdesc='Library for mocking DBus interactions using Qt'
-url='https://github.com/ubports/libqtdbusmock'
+pkgdesc="Library for mocking DBus interactions using Qt"
+url="https://github.com/ubports/libqtdbusmock"
 arch=all
-license=LGPL-3.0
+license="LGPL-3.0"
 depends=""
-depends_dev="qt5-qtbase-dev"
-makedepends="$depends_dev cmake libqtdbustest networkmanager-dev"
+makedepends="cmake libqtdbustest networkmanager-dev qt5-qtbase-dev"
 source="$pkgname-$_commit.tar.gz::https://github.com/ubports/$pkgname/archive/$_commit.tar.gz
 		no_coverage.patch"
 builddir="$srcdir/$pkgname-$_commit"
-options="!check" # See libqtdbustest
 
 prepare() {
 	default_prepare
 
-	# Don't build tests
+	# Don't build tests, can't find gmock even if it's installed
 	truncate -s 0 "$builddir"/tests/CMakeLists.txt
 }
 
@@ -31,7 +29,7 @@ build() {
 
 check() {
 	cd "$builddir"
-	make ARGS+="--output-on-failure" test
+	CTEST_OUTPUT_ON_FAILURE=TRUE ctest
 }
 
 package() {

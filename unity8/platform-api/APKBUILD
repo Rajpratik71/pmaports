@@ -1,29 +1,26 @@
 # Contributor: Bart Ribbers <bribbers@disroot.org>
-# Maintainer: Bart Ribbers <bribbers@disroot.org>
+# Maintainer:
 pkgname=platform-api
 pkgver=0_git20180218
 pkgrel=0
 _commit=464a38b496ec499ed19fb93aefd6770abd5c19b8
-pkgdesc='????'
+pkgdesc="Platform API for system level capabilities"
 arch="all"
 url='https://unity8.io'
 license="GPL-3.0 LGPL-3.0"
 depends=""
-makedepends="$depends_dev cmake cmake-extras process-cpp-dev dbus-cpp-dev url-dispatcher-dev location-service-dev"
+depends_dev="process-cpp-dev url-dispatcher-dev location-service-dev"
+makedepends="$depends_dev cmake cmake-extras dbus-cpp-dev"
 source="$pkgname-$_commit.tar.gz::https://github.com/ubports/$pkgname/archive/$_commit.tar.gz
 		hybris.patch
 		no_tests.patch
 		secure_getenv.patch"
 subpackages="$pkgname-dev"
-options="!check"
 builddir="$srcdir/$pkgname-$_commit"
 
 prepare() {
 	default_prepare
 	mkdir -p "$builddir"/build
-
-	# Don't build tests
-	truncate -s 0 "$builddir"/tests/CMakeLists.txt
 }
 
 build() {

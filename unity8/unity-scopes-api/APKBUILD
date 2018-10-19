@@ -1,32 +1,30 @@
 # Contributor: Bart Ribbers <bribbers@disroot.org>
-# Maintainer: Bart Ribbers <bribbers@disroot.org>
+# Maintainer:
 pkgname=unity-scopes-api
 pkgver=0_git20180917
 pkgrel=0
 _commit=06c06a644bc4739a3bb26fddd10248ed243055b6
-pkgdesc='????'
+pkgdesc="Library to integrate scopes with the Unity shell"
 arch="all"
-url='https://unity8.io'
+url="https://unity8.io"
 license="LGPL-3.0"
 depends=""
-depends_dev="glib-dev unity-api process-cpp-dev libapparmor-dev libapparmor lttng-ust-dev json-glib-dev libsignon-glib-dev libaccounts-glib-dev boost-dev zeromq-dev net-cpp-dev zmqpp-dev zmqpp capnproto-dev properties-cpp-dev"
-makedepends="$depends_dev cmake doxygen lttng-tools"
+depends_dev="glib-dev process-cpp-dev libapparmor-dev libapparmor lttng-ust-dev json-glib-dev libsignon-glib-dev libaccounts-glib-dev boost-dev zeromq-dev net-cpp-dev zmqpp-dev zmqpp capnproto-dev properties-cpp-dev"
+makedepends="$depends_dev cmake doxygen lttng-tools gmock gtest-dev unity-api-dev"
 source="$pkgname-$_commit.tar.gz::https://github.com/ubports/$pkgname/archive/$_commit.tar.gz
-		ParseChangelog.patch
-		missing_includes.patch
-		secure_getenv.patch
-		libsignon-glib-2.0.patch"
+	ParseChangelog.patch
+	missing_includes.patch
+	secure_getenv.patch
+	libsignon-glib-2.0.patch"
 subpackages="$pkgname-dev"
-options="!check"
 builddir="$srcdir/$pkgname-$_commit"
 
 prepare() {
 	mkdir "$builddir"/build
 	default_prepare
 
-	# Don't build tests
+	# Don't build tests, can't find GMock
 	truncate -s 0 "$builddir"/test/CMakeLists.txt
-	truncate -s 0 "$builddir"/src/scopes/testing/CMakeLists.txt
 }
 
 build() {

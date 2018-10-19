@@ -4,16 +4,16 @@ pkgname=content-hub
 pkgver=0_git20180610
 _commit="3156112daa14fa0ea49fdc0cd916aa74eff8d304"
 pkgrel=0
-pkgdesc='Content sharing/picking infrastructure and service, designed to allow apps to securely and efficiently exchange content'
-url='https://github.com/ubports/content-hub'
+pkgdesc="Content sharing/picking infrastructure and service, designed to allow apps to securely and efficiently exchange content"
+url="https://github.com/ubports/content-hub"
 arch=all
-license="LGPL-3.0"
+license="GPL-3.0 LGPL-3.0"
 depends=""
-makedepends="cmake qt5-qtdeclarative-dev ubuntu-app-launch-dev gsettings-qt-dev libnih-dev ubuntu-download-manager-dev libnotify-dev libapparmor libapparmor-dev ubuntu-ui-toolkit-dev"
+depends_dev="qt5-qtdeclarative-dev ubuntu-app-launch-dev gsettings-qt-dev libnih-dev ubuntu-download-manager-dev libnotify-dev libapparmor-dev ubuntu-ui-toolkit-dev"
+makedepends="$depends_dev cmake libapparmor"
 source="$pkgname-$_commit.tar.gz::https://github.com/ubports/$pkgname/archive/$_commit.tar.gz
 		qmlplugindump.patch"
-subpackages="$pkgname-dev"
-options="!check"
+subpackages="$pkgname-dev $pkgname-lang"
 builddir="$srcdir/$pkgname-$_commit"
 
 prepare() {
@@ -29,6 +29,11 @@ build() {
 
 	cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr -DCMAKE_INSTALL_LIBDIR="lib/" ..
 	make
+}
+
+check() {
+	cd "$builddir"/build
+	CTEST_OUTPUT_ON_FAILURE=TRUE ctest
 }
 
 package() {

@@ -1,3 +1,5 @@
+# Contributor:
+# Maintainer:
 pkgname=libertine
 pkgver=0_git20180814
 pkgrel=0
@@ -6,16 +8,17 @@ pkgdesc="A sandbox for running legacy deb-based X11 applications"
 url="https://github.com/ubports/libertine"
 arch="all"
 license="GPL-3.0"
-subpackages="$pkgname-doc"
 depends="system-settings"
 depends_dev="qt5-qtbase-dev qt5-qtdeclarative-dev gettext-dev python3-dev"
 makedepends="$depends_dev cmake intltool dbus-test-runner"
 source="$pkgname-$_commit.tar.gz::https://github.com/ubports/$pkgname/archive/$_commit.tar.gz"
+subpackages="$pkgname-doc"
 builddir="$srcdir/$pkgname-$_commit"
 
 prepare() {
 	default_prepare
-	# Don't build tests
+	
+	# Don't build tests, as they require systemd
 	truncate -s 0 "$builddir"/tests/CMakeLists.txt
 }
 
@@ -27,7 +30,7 @@ build() {
 
 check() {
 	cd $builddir
-	make ARGS+="--output-on-failure" test
+	CTEST_OUTPUT_ON_FAILURE=TRUE ctest
 }
 
 package() {

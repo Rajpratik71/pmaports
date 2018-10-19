@@ -1,14 +1,14 @@
 # Contributor: Bart Ribbers <bribbers@disroot.org>
-# Maintainer: Bart Ribbers <bribbers@disroot.org>
+# Maintainer:
 pkgname=cmake-extras
 pkgver=0_git20180921
 _commit=a711a56cac4b4f54b3545fc405356431b3250210
 pkgrel=0
-pkgdesc='A collection of add-ons for the CMake build tool'
-url='https://github.com/ubports/cmake-extras'
+pkgdesc="A collection of add-ons for the CMake build tool"
+url="https://github.com/ubports/cmake-extras"
 arch=noarch
 license="GPL-3.0"
-depends=""
+depends="cmake"
 makedepends="cmake"
 source="$pkgname-$_commit.tar.gz::https://github.com/ubports/$pkgname/archive/$_commit.tar.gz
 		Use_gtest_cmake_from_mir.patch

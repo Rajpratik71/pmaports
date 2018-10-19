@@ -1,28 +1,27 @@
 # Contributor: Bart Ribbers <bribbers@disroot.org>
-# Maintainer: Bart Ribbers <bribbers@disroot.org>
+# Maintainer:
 pkgname=ubuntu-app-launch
 pkgver=0_git20180604
 pkgrel=0
 _commit="bde4305307fff160180bb487eae9f2948023e433"
-pkgdesc='ubuntu-app-launch'
+pkgdesc="ubuntu-app-launch"
 arch="all"
-url='https://unity8.io'
+url="https://unity8.io"
 license="GPL-3.0"
 depends="libertine"
 depends_dev="glib-dev gobject-introspection-dev lttng-ust-dev json-glib-dev zeitgeist-dev mir-dev unity-api curl-dev properties-cpp-dev"
-makedepends="$depends_dev cmake dbus-test-runner"
+makedepends="$depends_dev cmake dbus-test-runner qt5-qtdeclarative gtest-dev"
 source="$pkgname-$_commit.tar.gz::https://github.com/ubports/$pkgname/archive/$_commit.tar.gz
 		no_coverage.patch
 		musl_environ.patch
 		sentinel_error.patch"
 subpackages="$pkgname-dev"
-options="!check"
-builddir="$srcdir/$pkgname-$_commit" # Requires an out of source tree build TODO: Fix this comment
+builddir="$srcdir/$pkgname-$_commit"
 
 prepare() {
 	default_prepare
 
-	# Don't build tests
+	# Don't build tests, undefined references
 	truncate -s 0 "$builddir"/tests/CMakeLists.txt
 }
 

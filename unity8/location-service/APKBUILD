@@ -1,27 +1,25 @@
 # Contributor: Bart Ribbers <bribbers@disroot.org>
-# Maintainer: Bart Ribbers <bribbers@disroot.org>
+# Maintainer:
 pkgname=location-service
 pkgver=0_git20180614
 pkgrel=0
 _commit=142f6ca0e4243448a43110453d22dae31f57b617
-pkgdesc='????'
+pkgdesc="Location service aggregating position/velocity/heading updates and exporting them over dbus"
 arch="all"
-url='https://unity8.io'
+url="https://unity8.io"
 license="GPL-3.0 LGPL-3.0"
 depends=""
-makedepends="$depends_dev cmake cmake-extras gettext boost-dev dbus-dev dbus-cpp-dev net-cpp-dev process-cpp-dev properties-cpp-dev json-c-dev libapparmor-dev trust-store gflags-dev glog-dev"
+depends_dev="boost-dev dbus-dev net-cpp-dev process-cpp-dev properties-cpp-dev json-c-dev libapparmor-dev gflags-dev glog-dev trust-store-dev"
+makedepends="$depends_dev cmake-extras gettext gtest-dev gmock dbus-cpp-dev"
 source="$pkgname-$_commit.tar.gz::https://github.com/ubports/$pkgname/archive/$_commit.tar.gz
 		missing_includes.patch"
-subpackages="$pkgname-dev"
-options="!check"
+subpackages="$pkgname-dev $pkgname-doc $pkgname-lang"
+options="!check" # Several failures
 builddir="$srcdir/$pkgname-$_commit"
 
 prepare() {
 	default_prepare
 	mkdir -p "$builddir"/build
-
-	# Don't build tests
-	truncate -s 0 "$builddir"/tests/CMakeLists.txt
 }
 
 build() {

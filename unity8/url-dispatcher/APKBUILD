@@ -4,24 +4,17 @@ pkgname=url-dispatcher
 pkgver=0_git20181007
 pkgrel=0
 _commit=b9a83f539b6d0c51b7f2397d40aed1132366672b
-pkgdesc='????'
+pkgdesc="Service to allow sending of URLs and get handlers started"
 arch="all"
-url='https://unity8.io'
+url="https://unity8.io"
 license="LGPL-3.0"
 depends=""
-depends_dev="glib-dev ubuntu-app-launch-dev json-glib-dev click-dev glib-dev libapparmor-dev"
-makedepends="$depends_dev cmake dbus-test-runner cmake-extras"
+depends_dev="ubuntu-app-launch-dev json-glib-dev click-dev libapparmor-dev"
+makedepends="$depends_dev cmake dbus-test-runner cmake-extras glib-dev gtest-dev gmock"
 source="$pkgname-$_commit.tar.gz::https://github.com/ubports/$pkgname/archive/$_commit.tar.gz"
 subpackages="$pkgname-dev"
-options="!check"
+options="!check" # Seem to require systemd
 builddir="$srcdir/$pkgname-$_commit"
-
-prepare() {
-	default_prepare
-
-	# Don't build tests
-	truncate -s 0 "$builddir"/tests/CMakeLists.txt
-}
 
 build() {
 	cmake \

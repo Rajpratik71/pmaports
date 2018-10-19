@@ -4,24 +4,22 @@ pkgname=ubuntu-download-manager
 pkgver=0_git20180603
 _commit=5ff8a51e5a8f68dce791a5c66f162137d7b96543
 pkgrel=0
-pkgdesc='????'
+pkgdesc="Provides a service for downloading files while an application is suspended"
 arch="all"
-url='https://unity8.io'
+url="https://unity8.io"
 license="LGPL-3.0"
 depends=""
 depends_dev="qt5-qtdeclarative-dev boost-dev glog-dev libnih-dev"
-makedepends="$depends_dev cmake cmake-extras"
-source="$pkgname-$_commit.tar.gz::https://github.com/ubports/$pkgname/archive/$_commit.tar.gz"
+makedepends="$depends_dev cmake cmake-extras gtest-dev gmock"
+source="$pkgname-$_commit.tar.gz::https://github.com/ubports/$pkgname/archive/$_commit.tar.gz
+	Gtest.patch"
 subpackages="$pkgname-dev"
 builddir="$srcdir/$pkgname-$_commit"
-options="!check"
+options="!check" # Requires network connection which isn't allowed
 
 prepare() {
 	default_prepare
 	mkdir -p "$builddir"/build
-
-	# Don't build tests
-	truncate -s 0 "$builddir"/tests/CMakeLists.txt
 }
 
 build() {
@@ -44,4 +42,5 @@ package() {
 	make DESTDIR="$pkgdir" install
 }
 
-sha512sums="1f343548951c14e29e9e461335ca3803f7a9f75c469760ed7bc93f5ff7d166e124c77da5cf1267c9f633b13e2bad6489fbbadb76e930044ac80ad1c2d9a3408a  ubuntu-download-manager-5ff8a51e5a8f68dce791a5c66f162137d7b96543.tar.gz"
+sha512sums="1f343548951c14e29e9e461335ca3803f7a9f75c469760ed7bc93f5ff7d166e124c77da5cf1267c9f633b13e2bad6489fbbadb76e930044ac80ad1c2d9a3408a  ubuntu-download-manager-5ff8a51e5a8f68dce791a5c66f162137d7b96543.tar.gz
+f3dfc3c0dfca5ebc4bbf9e110119ddcab8cc1a5c11ddad3791557a211c84b6fdf88842a7cd4309738f16e975f95ddad79bf136520798ef2370f7e5d1972c94ca  Gtest.patch"

@@ -1,27 +1,26 @@
 # Contributor: Bart Ribbers <bribbers@disroot.org>
-# Maintainer: Bart Ribbers <bribbers@disroot.org>
+# Maintainer:
 pkgname=qtmir
 pkgver=0_git20180919
 _commit=b37293e25eae4d03b344bb3f92f804d63dd1cce6
 pkgrel=0
-pkgdesc='QPA plugin to make Qt a Mir server'
+pkgdesc="QPA plugin to make Qt a Mir server"
 arch="all"
-url='https://unity8.io'
-license="????"
+url="https://unity8.io"
+license="LGPL-3.0"
 depends=""
 depends_dev="mir-dev process-cpp-dev qt5-qtdeclarative-dev qt5-qtsensors-dev ubuntu-app-launch-dev gsettings-qt-dev libqtdbustest libqtdbusmock content-hub-dev valgrind-dev url-dispatcher-dev"
-makedepends="$depends_dev cmake cmake-extras"
+makedepends="$depends_dev cmake cmake-extras gtest-dev"
 source="$pkgname-$_commit.tar.gz::https://github.com/ubports/$pkgname/archive/$_commit.tar.gz
 		use_cmake_extras_qmlplugins.patch
 		fix_polymorphic_type.patch"
-options="!check"
 builddir="$srcdir/$pkgname-$_commit"
 
 prepare() {
 	default_prepare
 	mkdir -p "$builddir"/build
 
-	# Don't build tests
+	# Don't build tests, they require Mir to be built with tests which is disabled
 	truncate -s 0 "$builddir"/tests/CMakeLists.txt
 }
 

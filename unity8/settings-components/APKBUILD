@@ -1,24 +1,24 @@
 # Contributor: Bart Ribbers <bribbers@disroot.org>
-# Maintainer: Bart Ribbers <bribbers@disroot.org>
+# Maintainer:
 pkgname=settings-components
 pkgver=0_git20180610
 pkgrel=0
 _commit=d66cac294e48d2a65ff8b5140187916c0eb1f2e8
-pkgdesc='????'
+pkgdesc="Ubuntu settings components for Unity8"
 arch="all"
-url='https://unity8.io'
+url="https://unity8.io"
 license="GPL-3.0 LGPL-3.0"
 depends=""
-makedepends="$depends_dev cmake cmake-extras qt5-qtdeclarative-dev"
+makedepends="cmake cmake-extras qt5-qtdeclarative-dev"
 source="$pkgname-$_commit.tar.gz::https://github.com/ubports/$pkgname/archive/$_commit.tar.gz"
-options="!check"
+subpackages="$pkgname-lang"
 builddir="$srcdir/$pkgname-$_commit"
 
 prepare() {
 	default_prepare
 	mkdir -p "$builddir"/build
 
-	# Don't build tests
+	# Don't build tests, can't find qmltestrunner binary
 	truncate -s 0 "$builddir"/tests/CMakeLists.txt
 }
 

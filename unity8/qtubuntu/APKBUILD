@@ -1,13 +1,13 @@
 # Contributor: Bart Ribbers <bribbers@disroot.org>
-# Maintainer: Bart Ribbers <bribbers@disroot.org>
+# Maintainer:
 pkgname=qtubuntu
 pkgver=0_git20180218
 _commit=e8a29655d8351b79689ad5ef87f7c843b38c0520
 pkgrel=0
-pkgdesc='????'
+pkgdesc="Qt plugins for Ubuntu Platform API"
 arch="all"
-url='https://unity8.io'
-license="GPL3 LGPL3"
+url="https://unity8.io"
+license="GPL-3.0 LGPL-3.0"
 depends=""
 makedepends="$depends_dev cmake cmake-extras content-hub-dev qt5-qtbase-dev mir-dev platform-api-dev"
 source="$pkgname-$_commit.tar.gz::https://github.com/ubports/$pkgname/archive/$_commit.tar.gz

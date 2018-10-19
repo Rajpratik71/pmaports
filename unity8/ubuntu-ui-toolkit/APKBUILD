@@ -1,30 +1,30 @@
 # Contributor: Bart Ribbers <bribbers@disroot.org>
-# Maintainer: Bart Ribbers <bribbers@disroot.org>
+# Maintainer:
 pkgname=ubuntu-ui-toolkit
 pkgver=0_git20180422
 pkgrel=0
 _commit=2f541e8b5e509ad40cd8dc70d634434e7ab8fc42
 pkgdesc='The Ubuntu UI toolkit used in Ubuntu Touch'
 arch="all"
-url='https://unity8.io'
+url="https://unity8.io"
 license="LGPL-3.0"
 depends="qt5-qtfeedback"
-depends_dev="libnih-dev qt5-qtdeclarative-dev qt5-qtsvg-dev qt5-qtpim-dev qt5-qtsystems-dev lttng-ust-dev libxi-dev eudev-dev mir-dev libevdev-dev qt5-qtgraphicaleffects qt5-qtfeedback-dev"
-makedepends="$depends_dev qt5-qttools"
+depends_dev="libnih-dev qt5-qtsvg-dev qt5-qtpim-dev qt5-qtsystems-dev lttng-ust-dev libxi-dev eudev-dev mir-dev libevdev-dev qt5-qtgraphicaleffects qt5-qtfeedback-dev"
+makedepends="$depends_dev qt5-qttools-dev qt5-qtdeclarative-dev"
 source="$pkgname-$_commit.tar.gz::https://github.com/ubports/$pkgname/archive/$_commit.tar.gz
 	0001-Adapt-to-QtPim-API-changes.patch
 	0002-Fix-Missing-sentinel-in-function-call-warning.patch
-	0003-Add-option-to-disable-building-of-docs.patch"
-subpackages="$pkgname-dev"
-options="!check"
+	0003-Add-option-to-disable-building-of-docs.patch
+	replace-bash-for-sh.patch"
+subpackages="$pkgname-dev $pkgname-lang"
+options="!check" # Complaining about a non-existing file
 builddir="$srcdir/$pkgname-$_commit"
 
 prepare() {
 	default_prepare
+	
 	# Lets warnings be warnings and not errors
 	sed -i 's|warning_clean|warn_off|' "$builddir"/.qmake.conf
-	# bin/bash => bin/sh
-	sed -i 's|#!/bin/bash|#!/bin/sh|' "$builddir"/documentation/docs.sh
 }
 
 build() {
@@ -46,4 +46,5 @@ package() {
 sha512sums="9f2d4707db936eb262893b226ffda71c886dcb2a99cb3c2e169f12f80ba04836717322a43f28919a75f43c57c8a6b1ebf52cd74cca50af0d8a657708faf81502  ubuntu-ui-toolkit-2f541e8b5e509ad40cd8dc70d634434e7ab8fc42.tar.gz
 016b0673cb0b1cdb7ef9632c414521f1522d1d14b22d7d6e11381b26cd849d340dba16c8656f4bff76defbde7e6d68245c3814e944e9d0aa05388009d9c06136  0001-Adapt-to-QtPim-API-changes.patch
 c5a8d341ad2abbc44745b8f358cd0e65bc781d94f5024e0ce6831bd6bd6dbf945bb5e57ba254c7e6c0b69c71c8fee169028dc7c99d868f15c6b568850d85d3cd  0002-Fix-Missing-sentinel-in-function-call-warning.patch
-fba64441decd59434beaf44be1c1324768e53724aab827cfb28b1efcd42b35a3ab18edc10d0b73a187ffe7c3a4da96e21b074adcd4d5c07bda5bfe473d413642  0003-Add-option-to-disable-building-of-docs.patch"
+fba64441decd59434beaf44be1c1324768e53724aab827cfb28b1efcd42b35a3ab18edc10d0b73a187ffe7c3a4da96e21b074adcd4d5c07bda5bfe473d413642  0003-Add-option-to-disable-building-of-docs.patch
+e01567f2426f78b0862e7b09cd99cabf3d885b600592e6a4f0e07dc077fae2ba8dd1d2deba3bb89d31171a90db6de909281664bcbc7736b9432f2bc0b26544e1  replace-bash-for-sh.patch"

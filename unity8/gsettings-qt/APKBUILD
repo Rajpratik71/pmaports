@@ -4,19 +4,18 @@ pkgname=gsettings-qt
 pkgver=0_git20171026
 _commit=3b03880cc40675541d330681e55e0e9787dce99d
 pkgrel=0
-pkgdesc="????"
+pkgdesc="Library to access GSettings from Qt"
 url="https://github.com/ubports/gsettings-qt"
 arch="all"
 license="LGPL-3.0"
 depends=""
-makedepends="qt5-qtdeclarative-dev"
-install=""
+depends_dev="qt5-qtdeclarative-dev"
+makedepends="$depends_dev qt5-qtbase-dev"
 subpackages="$pkgname-dev"
 source="$pkgname-$_commit.tar.gz::https://github.com/ubports/$pkgname/archive/$_commit.tar.gz
         fix_install.patch"
-# Out-of-source builds do not work, see https://github.com/ubports/gsettings-qt/issues/3
 builddir="$srcdir/$pkgname-$_commit"
-options="!check" # Checks fail
+options="!check" # Requires running X11 server
 
 build() {
 	cd "$builddir"

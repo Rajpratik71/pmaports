@@ -4,13 +4,13 @@ pkgname=click
 pkgver=0_git20180108
 _commit=28b9c13e89f9957f02b6b8cddb1e7aa123b5b6e2
 pkgrel=0
-pkgdesc="????"
+pkgdesc="Click is a simplified packaging format"
 url="https://github.com/ubports/click"
 arch="all"
-license="????"
+license="GPL-3.0"
 depends=""
-makedepends="cmake intltool vala gobject-introspection autoconf libtool json-glib-dev libgee-dev gobject-introspection-dev automake"
-install=""
+depends_dev="json-glib-dev libgee-dev gobject-introspection-dev"
+makedepends="$depends_dev cmake intltool vala gobject-introspection autoconf libtool automake"
 subpackages="$pkgname-dev $pkgname-doc"
 source="$pkgname-$_commit.tar.gz::https://github.com/ubports/$pkgname/archive/$_commit.tar.gz
         musl_fixes.patch"

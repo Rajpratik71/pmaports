@@ -9,13 +9,12 @@ url='https://github.com/ubports/libqtdbustest'
 arch=all
 license=LGPL-3.0
 depends=""
-depends_dev="qt5-qtbase-dev"
-makedepends="$depends_dev cmake cmake-extras gmock gtest gtest-dev"
+makedepends="cmake cmake-extras gmock gtest-dev qt5-qtbase-dev"
 checkdepends="procps py3-dbusmock dbus-x11"
 source="$pkgname-$_commit.tar.gz::https://github.com/ubports/$pkgname/archive/$_commit.tar.gz
         SuicidalSleep.patch"
 builddir="$srcdir/$pkgname-$_commit"
-options="!check" # Needs session and system dbus and others
+#options="!check" # Needs session and system dbus and others
 
 build() {
 	cd "$builddir"
@@ -25,8 +24,7 @@ build() {
 
 check() {
 	cd "$builddir"
-	eval `dbus-launch --sh-syntax`
-	make ARGS+="--output-on-failure" test
+	CTEST_OUTPUT_ON_FAILURE=TRUE ctest
 }
 
 package() {
