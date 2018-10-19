@@ -11,7 +11,6 @@ license="LGPL-2.1"
 depends=""
 makedepends="gnome-common automake autoconf glib-dev intltool"
 source="$pkgname-$_commit.tar.gz::https://github.com/ubports/$pkgname/archive/$_commit.tar.gz"
-#options="!check"
 builddir="$srcdir/$pkgname-$_commit"
 
 build() {

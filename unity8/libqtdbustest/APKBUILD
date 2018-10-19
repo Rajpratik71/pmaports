@@ -14,7 +14,6 @@ checkdepends="procps py3-dbusmock dbus-x11"
 source="$pkgname-$_commit.tar.gz::https://github.com/ubports/$pkgname/archive/$_commit.tar.gz
         SuicidalSleep.patch"
 builddir="$srcdir/$pkgname-$_commit"
-#options="!check" # Needs session and system dbus and others
 
 build() {
 	cd "$builddir"
