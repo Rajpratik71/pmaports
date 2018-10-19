@@ -46,13 +46,9 @@ check() {
 
 package() {
 	cd "$builddir"/build
-<<<<<<< Updated upstream
-	make DESTDIR="${pkgdir}" install
+	make DESTDIR="$pkgdir" install
 	# Remove this mock as apk thinks, it conflicts with the qmenumodel package
 	rm -r "$pkgdir"/usr/lib/unity8/qml/mocks/QMenuModel/
-=======
-	make DESTDIR="$pkgdir" install
->>>>>>> Stashed changes
 }
 
 sha512sums="811fc073ad77ec2991d968fe6784dd4c9d4dee1d2ef37a52cbb8f20f997085a31fded0e3b20ea603bf70a1e823aa000ee5df4a965e2590cfec9ef3807f390e14  unity8-87aa3950875c9cb614b33919dea08ae3ca16585b.tar.gz

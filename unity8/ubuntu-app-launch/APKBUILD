@@ -9,7 +9,7 @@ arch="all"
 url="https://unity8.io"
 license="GPL-3.0"
 depends="libertine"
-depends_dev="glib-dev gobject-introspection-dev lttng-ust-dev json-glib-dev zeitgeist-dev mir-dev unity-api curl-dev properties-cpp-dev"
+depends_dev="glib-dev gobject-introspection-dev lttng-ust-dev json-glib-dev zeitgeist-dev mir-dev unity-api-dev curl-dev properties-cpp-dev"
 makedepends="$depends_dev cmake dbus-test-runner qt5-qtdeclarative gtest-dev"
 source="$pkgname-$_commit.tar.gz::https://github.com/ubports/$pkgname/archive/$_commit.tar.gz
 		no_coverage.patch
