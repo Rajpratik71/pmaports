@@ -1,0 +1,39 @@
+# Contributor: Bart Ribbers <bribbers@disroot.org>
+# Maintainer:
+pkgname=unity-system-compositor
+pkgver=0_git20180219
+pkgrel=0
+_commit="609fef0d04e8088218894f4ee7835a1d18e55240"
+pkgdesc="????"
+arch="all"
+url="https://unity8.io"
+license="GPL-3.0"
+depends=""
+makedepends="$depends_dev cmake gmock gtest-dev gdk-pixbuf-dev mir-dev dbus-dev"
+source="$pkgname-$_commit.tar.gz::https://github.com/ubports/$pkgname/archive/$_commit.tar.gz
+	fix-gmock-search.patch"
+subpackages=""
+options="!check" # Broken
+builddir="$srcdir/$pkgname-$_commit"
+
+build() {
+	cmake \
+		-DCMAKE_BUILD_TYPE=Release \
+		-DCMAKE_INSTALL_PREFIX=/usr \
+		-DCMAKE_INSTALL_LIBDIR=lib \
+		-DBUILD_QCH=ON
+	make
+}
+
+check() {
+	cd "$builddir"
+	CTEST_OUTPUT_ON_FAILURE=TRUE ctest
+}
+
+package() {
+	cd "$builddir"
+	make DESTDIR="$pkgdir" install
+}
+
+sha512sums="ce53738c8728d6aa05b43493ef336b9775d0d81681760cc34b7eacea93117c1da5f2da58e6773ef9cd2a610945eef8a5543dd9a99fa5a629e45b73946bbab007  unity-system-compositor-609fef0d04e8088218894f4ee7835a1d18e55240.tar.gz
+7ffd9145ce76b7827ada1f598e8fcc1731a6334929184427f1fa1271cf94b6ad845b0491b473ddf50aefccb2c96cbcbc506a4c482ff2ae959f355f1e8d4c9c4c  fix-gmock-search.patch"

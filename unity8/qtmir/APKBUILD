@@ -9,8 +9,7 @@ arch="all"
 url="https://unity8.io"
 license="LGPL-3.0"
 depends=""
-depends_dev="mir-dev process-cpp-dev qt5-qtdeclarative-dev qt5-qtsensors-dev ubuntu-app-launch-dev gsettings-qt-dev libqtdbustest libqtdbusmock content-hub-dev valgrind-dev url-dispatcher-dev"
-makedepends="$depends_dev cmake cmake-extras gtest-dev"
+makedepends="$depends_dev cmake cmake-extras gtest-dev mir-dev process-cpp-dev qt5-qtdeclarative-dev qt5-qtsensors-dev ubuntu-app-launch-dev gsettings-qt-dev libqtdbustest libqtdbusmock content-hub-dev valgrind-dev url-dispatcher-dev"
 source="$pkgname-$_commit.tar.gz::https://github.com/ubports/$pkgname/archive/$_commit.tar.gz
 		use_cmake_extras_qmlplugins.patch
 		fix_polymorphic_type.patch"
