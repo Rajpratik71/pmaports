@@ -15,6 +15,7 @@ arch="all"
 license="LGPL-2.0 with exceptions or GPL-3.0 with exceptions"
 _sub="$pkgname-sqlite $pkgname-odbc $pkgname-postgresql $pkgname-mysql
 	$pkgname-tds $pkgname-x11"
+depends="qtchooser"
 depends_dev="mesa-dev libice-dev libsm-dev libx11-dev libxext-dev
 	libressl-dev fontconfig-dev freetype-dev glib-dev libpng-dev zlib-dev
 	sqlite-dev dbus-dev perl $_sub"
@@ -126,6 +127,7 @@ check() {
 package() {
 	cd "$builddir"
 	make INSTALL_ROOT="$pkgdir" install
+
 	mkdir -p "$pkgdir"/usr/bin/
 	for i in "$pkgdir"/$_qt5_prefix/bin/*; do
 		_name=${i##*/}
@@ -150,7 +152,6 @@ dev() {
 	_mv_files usr/lib/qt5/mkspecs \
 		usr/lib/cmake \
 		usr/lib/qt5/bin \
-		usr/bin \
 		$(find usr/ -name '*.prl')
 	default_dev
 }

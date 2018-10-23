@@ -1,0 +1,43 @@
+# Contributor: Bart Ribbers <bribbers@disroot.org>
+
+pkgname=qtchooser
+pkgver=66
+pkgrel=0
+pkgdesc="Wrap the other Qt tools by searching for different instances of Qt on the system"
+arch="all"
+url="http://code.qt.io/cgit/qt/qtchooser.git"
+license="GPL-3.0 LGPL-2.1"
+depends=""
+makedepends=""
+source="https://download.qt.io/official_releases/qtchooser/$pkgname-$pkgver.tar.xz
+	qt4.conf
+	qt5.conf"
+subpackages="$pkgname-doc"
+
+prepare() {
+	cd "$builddir"
+	#sed -e 's|bindir = $(prefix)/bin|bindir = $(prefix)/lib/qtchooser|' -i Makefile -i src/qtchooser/Makefile
+}
+
+build() {
+	cd "$builddir"
+	bindir=/usr/lib/qtchooser/ make
+}
+
+package() {
+	cd "$builddir"
+	make INSTALL_ROOT="$pkgdir" install
+
+	install -d "$pkgdir"/etc/xdg/qtchooser
+	install -m644 "$srcdir"/qt4.conf \
+		"$pkgdir"/etc/xdg/qtchooser/
+	install -m644 "$srcdir"/qt5.conf \
+		"$pkgdir"/etc/xdg/qtchooser/
+
+	# Set the default Qt
+	ln -s /etc/xdg/qtchooser/qt5.conf \
+		"$pkgdir"/etc/xdg/qtchooser/default.conf
+}
+sha512sums="0c7d3588ddd7b21e6e9d799204924e06e0b0950c898dfd23088f1e7657b7f821a35579aa062658499809f9d9757e82c3c592591aa2e5ec453463929bf2b33bac  qtchooser-66.tar.xz
+9c3a308ee6d9ea83a4225d8b99da8d53c3fe49697f6b4ca0d788862695782cc2254d5b6d29465764c58cd28bb6f7179a03a1b2e0193a41fb3781ef4322ad58d8  qt4.conf
+aa1c18df9d5279ff00d06a0b3f19223e36e64f6275cf3ebc5a4be1e41bb139787325b88f89e0133e9960a7b2582716962dd5d195202ff68715883ce41babda73  qt5.conf"
