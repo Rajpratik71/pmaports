@@ -1,0 +1,43 @@
+# Contributor: Bart Ribbers <bribbers@disroot.org>
+# Maintainer: Bart Ribbers <bribbers@disroot.org>
+pkgname=kde-cli-tools
+pkgver=5.13.5
+pkgrel=0
+pkgdesc="Tools based on KDE Frameworks 5 to better interact with the system"
+arch="all"
+url="https://cgit.kde.org/kde-cli-tools"
+license="GPL-2.0 LGPL-2.1"
+depends=""
+depends_dev="qt5-qtbase-dev qt5-qtsvg-dev kconfig-dev kdoctools-dev kiconthemes-dev
+	kinit-dev ki18n-dev kcmutils-dev kio-dev kservice-dev kwindowsystem-dev
+	kactivities-dev plasma-workspace-dev"
+makedepends="$depends_dev extra-cmake-modules"
+source="https://download.kde.org/stable/plasma/$pkgver/$pkgname-$pkgver.tar.xz"
+subpackages="$pkgname-doc $pkgname-lang"
+options="!check" # Requires running X11 server
+
+build() {
+	if [ "$CBUILD" != "$CHOST" ]; then
+		CMAKE_CROSSOPTS="-DCMAKE_SYSTEM_NAME=Linux -DCMAKE_HOST_SYSTEM_NAME=Linux"
+	fi
+	cmake \
+		-DCMAKE_BUILD_TYPE=Release \
+		-DCMAKE_INSTALL_PREFIX=/usr \
+		-DCMAKE_INSTALL_LIBDIR=lib \
+		-DBUILD_SHARED_LIBS=True \
+		-DCMAKE_CXX_FLAGS="$CXXFLAGS" \
+		-DCMAKE_C_FLAGS="$CFLAGS" \
+		${CMAKE_CROSSOPTS}
+	make
+}
+
+check() {
+	cd "$builddir"
+	CTEST_OUTPUT_ON_FAILURE=TRUE ctest
+}
+
+package() {
+	cd "$builddir"
+	make DESTDIR="$pkgdir" install
+}
+sha512sums="88aaa5c5a70da7d7f43f9d1b01d61d68c60e87942556955927cfb8655a8f6219d5220aff0c1a937f00444b3d03877d539bf544488a432108bf74434fc89566d7  kde-cli-tools-5.13.5.tar.xz"
