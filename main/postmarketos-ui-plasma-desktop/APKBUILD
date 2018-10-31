@@ -5,10 +5,10 @@ pkgdesc="(Wayland/X11) Desktop variant of KDE Plasma (aarch64, x86_64 or hardwar
 url="https://wiki.postmarketos.org"
 arch="noarch"
 license="GPL-3.0+"
-depends="sddm plasma-desktop systemsettings breeze-icons
-    postmarketos-demos kscreen elisa pulseaudio pulseaudio-utils powerdevil
-	polkit-kde-agent kwayland-integration postmarketos-artwork-wallpapers
-	konsole plasma-nm plasma-pa qt5-qtvirtualkeyboard dolphin user-manager"
+depends="sddm plasma-desktop systemsettings breeze-icons postmarketos-demos
+	kscreen elisa pulseaudio pulseaudio-utils powerdevil polkit-kde-agent
+	kwayland-integration postmarketos-artwork-wallpapers konsole plasma-nm
+	plasma-pa qt5-qtvirtualkeyboard dolphin user-manager kde-gtk-config"
 source="qtlogging.ini org.kde.phone.homescreen.js"
 install="$pkgname.post-install"
 options="!check"

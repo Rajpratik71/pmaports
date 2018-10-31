@@ -1,0 +1,41 @@
+# Contributor: Bart Ribbers <bribbers@disroot.org>
+# Maintainer: Bart Ribbers <bribbers@disroot.org>
+pkgname=kde-gtk-config
+pkgver=5.13.5
+pkgrel=0
+pkgdesc="GTK2 and GTK3 Configurator for KDE"
+arch="all"
+url="https://cgit.kde.org/kde-gtk-config"
+license="GPL-2.0 LGPL-2.1"
+depends=""
+depends_dev="qt5-qtbase-dev ki18n-dev kio-dev kconfigwidgets-dev knewstuff-dev karchive-dev kcmutils-dev kiconthemes-dev gtk+2.0-dev gtk+3.0-dev gsettings-desktop-schemas-dev"
+makedepends="$depends_dev extra-cmake-modules gsettings-desktop-schemas"
+source="https://download.kde.org/stable/plasma/$pkgver/$pkgname-$pkgver.tar.xz"
+subpackages="$pkgname-lang"
+#options="!check" # Requires running X11 server
+
+build() {
+	if [ "$CBUILD" != "$CHOST" ]; then
+		CMAKE_CROSSOPTS="-DCMAKE_SYSTEM_NAME=Linux -DCMAKE_HOST_SYSTEM_NAME=Linux"
+	fi
+	cmake \
+		-DCMAKE_BUILD_TYPE=Release \
+		-DCMAKE_INSTALL_PREFIX=/usr \
+		-DCMAKE_INSTALL_LIBDIR=lib \
+		-DBUILD_SHARED_LIBS=True \
+		-DCMAKE_CXX_FLAGS="$CXXFLAGS" \
+		-DCMAKE_C_FLAGS="$CFLAGS" \
+		${CMAKE_CROSSOPTS}
+	make
+}
+
+check() {
+	cd "$builddir"
+	CTEST_OUTPUT_ON_FAILURE=TRUE ctest
+}
+
+package() {
+	cd "$builddir"
+	make DESTDIR="$pkgdir" install
+}
+sha512sums="bc9b75961a0a0efd9824a1913266831c27a9840af1f87fdef46527065321731b3c35b550cff2727f62c360ee72f9495d96cfab3a38c06b661bae9bdf7d739575  kde-gtk-config-5.13.5.tar.xz"
