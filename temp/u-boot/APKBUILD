@@ -3,8 +3,9 @@
 # Contributor: Timo Teras <timo.teras@iki.fi>
 # Maintainer: Leonardo Arena <rnalrd@alpinelinux.org>
 pkgname=u-boot
-pkgver=2018.05
+pkgver=2018.07_git20181122
 pkgrel=3
+_commit="aa09a071c3295011816c0e2f18532f61bc8b74f3"
 _atfversion="c9f55c023164a6c8c49f70f7ac6c68c626839d6f"
 pkgdesc="u-boot bootloader common files"
 url="http://www.denx.de/wiki/U-Boot/"
@@ -12,16 +13,15 @@ arch="armhf aarch64"
 license="GPL-2.0"
 depends=""
 depends_dev=""
-makedepends="$depends_dev bc dtc python2-dev swig binutils coreutils"
+makedepends="$depends_dev bc dtc python2-dev swig binutils coreutils bison flex"
 install=""
-source="ftp://ftp.denx.de/pub/u-boot/u-boot-${pkgver//_/-}.tar.bz2
-        arm-trusted-firmware-${_atfversion}.tar.gz::https://github.com/apritzel/arm-trusted-firmware/archive/${_atfversion}.tar.gz
+source="u-boot-sunxi-${_commit}.tar.gz::http://git.denx.de/?p=u-boot/u-boot-sunxi.git;a=snapshot;h=${_commit};sf=tgz
+	arm-trusted-firmware-${_atfversion}.tar.gz::https://github.com/apritzel/arm-trusted-firmware/archive/${_atfversion}.tar.gz
 	README.txt
 	update-u-boot
-	sopine-baseboard.patch
 	"
 
-builddir="$srcdir"/u-boot-${pkgver//_/-}
+builddir="$srcdir"/u-boot-sunxi-${_commit:0:7}
 atfbuilddir="$srcdir"/arm-trusted-firmware-${_atfversion}
 
 case "$CARCH" in
@@ -35,7 +35,7 @@ armhf) board_configs="
 aarch64) board_configs="
 	thunderx:thunderx_88xx
 	raspberrypi:rpi_3
-	pine64:sopine_baseboard
+	pine64:pine64-lts
 	";;
 esac
 
@@ -118,8 +118,7 @@ for board_config in $board_configs; do
 	eval "${_board}() { _split_boards $_board ${_configs//,/ }; }"
 done
 
-sha512sums="218f71282c9d027b0faf210ce2d4d713779e0c61ea4a23f03d5dec0ca8836a3c26b46c5e258d583834f5b5a2f4663f98729ca4b0101a60f85457eb892f8370d2  u-boot-2018.05.tar.bz2
+sha512sums="e8c55628f4d763e0b4a28e65fc774e7a493e8904da3a425df8fc1796341e42d856d81d2dbf393dfc976cfa75bca234e053a8ab3569a16620bd5c9e33709f255c  u-boot-sunxi-aa09a071c3295011816c0e2f18532f61bc8b74f3.tar.gz
 e964f0903f29a08d3a4a3177bcbfa9df68f47d30cac7f0d2597a7101c00632efdcd2c6ecba7f8be2e66a9689388bf2fa03087c0023ef99a5e1d080af5518d53c  arm-trusted-firmware-c9f55c023164a6c8c49f70f7ac6c68c626839d6f.tar.gz
 f8c9bb6e84d6f0620c976ac7ad5dd7ec7ff9dfdd4b1d03d2bf6653e7beccf80bdf2debfc92fb1f696dba92fb40287d3c45897e0078951451d0835cb61a5f16d1  README.txt
-f3bb656bbd13caf10a8ea619bc08b439e7dc27526c9cbdfa0374f4f8e277632ff4df06b34d441d6723a93d4a54aa03465d4270c44219d6a150d416b9c56edbbe  update-u-boot
-50b19c0452d58ff80dfd2643330bbfe2349db687af258e5cb61f3872e0cac800df160baee7d6b0133bcc8b60d743a03e513db62a1917388101cfdea634424ae4  sopine-baseboard.patch"
+f3bb656bbd13caf10a8ea619bc08b439e7dc27526c9cbdfa0374f4f8e277632ff4df06b34d441d6723a93d4a54aa03465d4270c44219d6a150d416b9c56edbbe  update-u-boot"
