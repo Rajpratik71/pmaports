@@ -6,7 +6,7 @@ pkgname=u-boot
 pkgver=2018.07_git20181122
 pkgrel=3
 _commit="aa09a071c3295011816c0e2f18532f61bc8b74f3"
-_atfversion="c9f55c023164a6c8c49f70f7ac6c68c626839d6f"
+_atfversion="98aab97484b27e40aa74a93e5d1c1ac037a7e0b8"
 pkgdesc="u-boot bootloader common files"
 url="http://www.denx.de/wiki/U-Boot/"
 arch="armhf aarch64"
@@ -16,7 +16,7 @@ depends_dev=""
 makedepends="$depends_dev bc dtc python2-dev swig binutils coreutils bison flex"
 install=""
 source="u-boot-sunxi-${_commit}.tar.gz::http://git.denx.de/?p=u-boot/u-boot-sunxi.git;a=snapshot;h=${_commit};sf=tgz
-	arm-trusted-firmware-${_atfversion}.tar.gz::https://github.com/apritzel/arm-trusted-firmware/archive/${_atfversion}.tar.gz
+	arm-trusted-firmware-${_atfversion}.tar.gz::https://github.com/ARM-software/arm-trusted-firmware/archive/${_atfversion}.tar.gz
 	README.txt
 	update-u-boot
 	"
@@ -50,7 +50,7 @@ build() {
 		export LDFLAGS=""
 		msg "Building ARM trusted firmware for allwinner"
 		cd "$atfbuilddir"
-		make PLAT=sun50iw1p1 DEBUG=1 bl31
+		make PLAT=sun50i_a64 DEBUG=1 bl31
 		export BL31="$atfbuilddir"/build/sun50iw1p1/debug/bl31.bin
 	fi
 
@@ -119,6 +119,6 @@ for board_config in $board_configs; do
 done
 
 sha512sums="e8c55628f4d763e0b4a28e65fc774e7a493e8904da3a425df8fc1796341e42d856d81d2dbf393dfc976cfa75bca234e053a8ab3569a16620bd5c9e33709f255c  u-boot-sunxi-aa09a071c3295011816c0e2f18532f61bc8b74f3.tar.gz
-e964f0903f29a08d3a4a3177bcbfa9df68f47d30cac7f0d2597a7101c00632efdcd2c6ecba7f8be2e66a9689388bf2fa03087c0023ef99a5e1d080af5518d53c  arm-trusted-firmware-c9f55c023164a6c8c49f70f7ac6c68c626839d6f.tar.gz
+e0a3cbc34e7447045a6bff981abd9469797e1fe71795ef1c913db52d064ba38a84f319777f8c7c738af35cf5a2045615bbcbe06a527a6c5ebe03ee20e160f7fe  arm-trusted-firmware-98aab97484b27e40aa74a93e5d1c1ac037a7e0b8.tar.gz
 f8c9bb6e84d6f0620c976ac7ad5dd7ec7ff9dfdd4b1d03d2bf6653e7beccf80bdf2debfc92fb1f696dba92fb40287d3c45897e0078951451d0835cb61a5f16d1  README.txt
 f3bb656bbd13caf10a8ea619bc08b439e7dc27526c9cbdfa0374f4f8e277632ff4df06b34d441d6723a93d4a54aa03465d4270c44219d6a150d416b9c56edbbe  update-u-boot"
