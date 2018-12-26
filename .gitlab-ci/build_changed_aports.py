@@ -11,14 +11,19 @@ def get_pmaports_dir():
     return os.path.realpath(os.path.join(os.path.dirname(__file__) + "/.."))
 
 
-def run_git(parameters):
-    """ Run git in the pmaports folder and return the output """
+def run_git(parameters, check=True):
+    """ Run git in the pmaports dir and return the output """
     cmd = ["git", "-C", get_pmaports_dir()] + parameters
-    return subprocess.check_output(cmd).decode()
+    try:
+        return subprocess.check_output(cmd).decode()
+    except subprocess.CalledProcessError:
+        if check:
+            raise
+        return None
 
 
 def run_pmbootstrap(parameters):
-    """ Run pmbootstrap with the pmaports folder as --aports """
+    """ Run pmbootstrap with the pmaports dir as --aports """
     cmd = ["pmbootstrap", "--aports", get_pmaports_dir()] + parameters
     process = subprocess.Popen(cmd)
     process.communicate()
@@ -39,16 +44,21 @@ def get_changed_files():
 
     # Check if we are latest upstream/master
     if commit_head == commit_upstream_master:
-        commit = "HEAD~1"  # then compare with previous commit
+        # then compare with previous commit
+        commit = "HEAD~1"
     else:
-        commit = run_git(["merge-base", "upstream/master", "HEAD"])[:-1]  # otherwise compare with latest common ancestor
+        # otherwise compare with latest common ancestor
+        commit = run_git(["merge-base", "upstream/master", "HEAD"])[:-1]
     print("comparing HEAD with: " + commit)
 
     # Changed files
     ret = run_git(["diff", "--name-only", commit, "HEAD"]).splitlines()
     print("changed file(s):")
     for file in ret:
-        print("  " + file)
+        message = "  " + file
+        if not os.path.exists(file):
+            message += " (deleted)"
+        print(message)
     return ret
 
 
@@ -56,9 +66,11 @@ def get_changed_packages():
     files = get_changed_files()
     ret = set()
     for file in files:
-        # Skip files in the root folder of pmaports as well as folders
-        # beginning with a dot (.gitlab-ci/)
-        if "/" not in file or file.startswith("."):
+        # Skip files:
+        # * in the root dir of pmaports (e.g. README.md)
+        # * path beginning with a dot (e.g. .gitlab-ci/)
+        # * non-existing files (deleted packages)
+        if "/" not in file or file.startswith(".") or not os.path.exists(file):
             continue
 
         # Add to the ret set (removes duplicated automatically)
@@ -86,7 +98,7 @@ def check_build(packages):
 if __name__ == "__main__":
     # Add a remote pointing to postmarketOS/pmaports for later
     run_git(["remote", "add", "upstream",
-             "https://gitlab.com/postmarketOS/pmaports.git"])
+             "https://gitlab.com/postmarketOS/pmaports.git"], False)
     run_git(["fetch", "-q", "upstream"])
 
     # Build changed packages
