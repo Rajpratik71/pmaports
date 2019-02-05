@@ -19,7 +19,7 @@ wiki:
 # static code analysis (shellcheck is not in Alpine, so we use Debian)
 py-sh-static:
   stage: first
-  image: python:3.6-slim-stretch
+  image: python:3.7-slim-stretch
   before_script:
     - apt -q update >/dev/null
     - apt -y install flake8 shellcheck >/dev/null
